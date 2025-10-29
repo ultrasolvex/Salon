@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>صالون التميز - الحجز الفاخر</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00d9c0;
+      --accent: #22d97a;
+      --bg-dark: #0a0f24;
+      --card-bg: #0d1326;
+      --text-light: #e2e8f0;
+      --text-muted: #a3bffa;
+      --danger: #ef4444;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+    body{
+      background:radial-gradient(circle at top,#0a0f24 0%,#050817 100%);
+      color:var(--text-light);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:15px;
+    }
+    .container{
+      background:var(--card-bg);
+      padding:28px 22px;border-radius:22px;border:2px solid var(--primary);
+      box-shadow:inset 0 0 25px rgba(0,217,192,0.3),0 0 35px rgba(0,217,192,0.25);
+      max-width:460px;width:100%;text-align:center;animation:glow 3s ease-in-out infinite alternate;
+      position:relative;backdrop-filter:blur(10px)
+    }
+    @keyframes glow{from{box-shadow:inset 0 0 25px rgba(0,217,192,0.3),0 0 35px rgba(0,217,192,0.2)}to{box-shadow:inset 0 0 40px rgba(0,217,192,0.5),0 0 50px rgba(0,217,192,0.35)}}
+    h1{color:var(--primary);margin-bottom:12px;font-size:1.9rem;font-weight:800;text-shadow:0 0 15px rgba(0,217,192,0.5)}
+    .subtitle{color:var(--text-muted);font-size:.95rem;margin-bottom:24px}
+    label{display:block;margin-bottom:6px;color:var(--text-muted);font-weight:600;text-align:right}
+    input,select{width:100%;padding:14px 16px;border:2px solid var(--primary);border-radius:14px;background:#050a1b;color:#f1f5f9;font-size:1rem;transition:.3s}
+    input:focus,select:focus{border-color:#0fffc6;box-shadow:0 0 18px rgba(0,255,213,0.4);transform:scale(1.02)}
+    button[type=submit]{background:linear-gradient(135deg,var(--primary),var(--accent));color:white;border:none;padding:15px 32px;font-size:1.15rem;font-weight:700;border-radius:16px;cursor:pointer;width:100%;transition:.3s;box-shadow:0 6px 20px rgba(0,217,192,0.3)}
+    button[type=submit]:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,217,192,0.45)}
+    .booking-info{margin:16px 0 8px;padding:12px;border-radius:12px;font-weight:600;background:rgba(0,217,192,0.12);border:1px solid var(--primary);color:var(--primary);cursor:pointer;display:none}
+    .details-card{background:rgba(15,23,42,.98);border:1.5px solid var(--primary);border-radius:16px;padding:22px;margin-top:18px;display:none}
+    .details-card h3{color:var(--primary);margin-bottom:14px}
+    .cancel-btn{background:var(--danger);color:white;padding:10px 24px;border:none;border-radius:10px;cursor:pointer;margin-top:16px}
+    .cancel-btn:hover{background:#dc2626}
+    .success-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:linear-gradient(135deg,#10b981,#059669);color:white;padding:20px 28px;border-radius:18px;box-shadow:0 15px 40px rgba(16,185,129,.4);z-index:10000;text-align:center;font-weight:700;font-size:1.1rem;opacity:0;pointer-events:none;transition:.4s}
+    .success-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>صالون التميز</h1>
+    <p class="subtitle">تجربة فاخرة تنتظرك 💈</p>
+
+    <div id="bookingInfo" class="booking-info"></div>
+    <div id="detailsCard" class="details-card"></div>
+
+    <form id="bookingForm">
+      <label for="name">الاسم الكامل</label>
+      <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
+
+      <label for="service">نوع الخدمة</label>
+      <select id="service" required>
+        <option value="">اختر الخدمة</option>
+        <option value="قص شعر VIP">قص شعر VIP</option>
+        <option value="حلاقة ذقن ملكية">حلاقة ذقن ملكية</option>
+        <option value="صبغة فاخرة">صبغة فاخرة</option>
+        <option value="عناية بالبشرة">عناية بالبشرة</option>
+      </select>
+
+      <label for="day">اختر اليوم</label>
+      <select id="day" required></select>
+
+      <label for="hour">اختر الساعة</label>
+      <select id="hour" required></select>
+
+      <button type="submit">احجز الآن</button>
+    </form>
+  </div>
+
+  <div id="successToast" class="success-toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyALYto6lJvO0qrne3mL1zz2jBdlgnA4-nA",
+      authDomain: "salonbookingsystem-d2296.firebaseapp.com",
+      databaseURL: "https://salonbookingsystem-d2296-default-rtdb.firebaseio.com",
+      projectId: "salonbookingsystem-d2296",
+      storageBucket: "salonbookingsystem-d2296.firebasestorage.app",
+      messagingSenderId: "51763851442",
+      appId: "1:51763851442:web:3ebd2e1c6d84a24ac119ab"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const days = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+    const daysSelect = document.getElementById("day");
+    const hoursSelect = document.getElementById("hour");
+    const toast = document.getElementById("successToast");
+    const info = document.getElementById("bookingInfo");
+    const details = document.getElementById("detailsCard");
+    const form = document.getElementById("bookingForm");
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(()=>toast.classList.remove("show"),3000);
+    }
+
+    function populateDays() {
+      daysSelect.innerHTML = "<option value=''>اختر اليوم</option>";
+      const today = new Date();
+      for (let i=0;i<7;i++){
+        const d = new Date();
+        d.setDate(today.getDate()+i);
+        const val = d.toISOString().slice(0,10);
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.textContent = `${days[d.getDay()]} (${d.getDate()}/${d.getMonth()+1})`;
+        daysSelect.appendChild(opt);
+      }
+    }
+
+    function populateHours() {
+      hoursSelect.innerHTML = "<option value=''>اختر الساعة</option>";
+      for (let h=9;h<=21;h++){
+        const opt=document.createElement("option");
+        opt.value=`${h}:00`;
+        opt.textContent=`${h}:00`;
+        hoursSelect.appendChild(opt);
+      }
+    }
+
+    const bookingsRef = ref(db,"bookings");
+    let currentBookings = {};
+    let myBooking = JSON.parse(localStorage.getItem("myBooking"))||null;
+
+    onValue(bookingsRef,snap=>{
+      currentBookings = snap.val()||{};
+      updateHours();
+      if (myBooking && !currentBookings[myBooking.slotKey]) {
+        showToast("📢 تم إلغاء حجزك بواسطة الصالون");
+        localStorage.removeItem("myBooking");
+        myBooking=null;
+        info.style.display="none";
+        details.style.display="none";
+      }
+    });
+
+    function updateHours(){
+      const selectedDay = daysSelect.value;
+      if(!selectedDay) return;
+
+      const now = new Date();
+      const todayISO = now.toISOString().slice(0,10);
+
+      hoursSelect.querySelectorAll("option").forEach(opt=>{
+        if(!opt.value) return;
+        const key=`${selectedDay}_${opt.value}`;
+        const [hour] = opt.value.split(":");
+        const isPast = (selectedDay === todayISO && parseInt(hour) <= now.getHours());
+        opt.disabled = currentBookings[key] || isPast;
+        opt.style.opacity = opt.disabled ? ".4" : "1";
+      });
+    }
+
+    daysSelect.addEventListener("change",updateHours);
+
+    if(myBooking) showInfo(myBooking);
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const service = document.getElementById("service").value;
+      const day = daysSelect.value;
+      const hour = hoursSelect.value;
+
+      if (!name || !service || !day || !hour) return;
+      const slotKey = `${day}_${hour}`;
+
+      if (currentBookings[slotKey]) return alert("عذرًا، هذا الموعد محجوز.");
+
+      const bookingId = Date.now().toString();
+
+      await set(ref(db, `bookings/${slotKey}/${bookingId}`), {
+        name,
+        service,
+        timestamp: new Date().toISOString()
+      });
+
+      myBooking = { name, service, day, hour, slotKey, bookingId };
+      localStorage.setItem("myBooking", JSON.stringify(myBooking));
+
+      showToast("✅ تم الحجز بنجاح");
+      showInfo(myBooking);
+      form.reset();
+      populateDays();
+      populateHours();
+    });
+
+    function showInfo(b){
+      info.style.display="block";
+      info.textContent="✅ لديك حجز - اضغط لعرض التفاصيل";
+      info.onclick=()=>showDetails(b);
+    }
+
+    function showDetails(b){
+      const d = new Date(b.day);
+      details.innerHTML=`
+        <h3>تفاصيل الحجز</h3>
+        <p><b>الاسم:</b> ${b.name}</p>
+        <p><b>الخدمة:</b> ${b.service}</p>
+        <p><b>اليوم:</b> ${days[d.getDay()]} (${d.getDate()}/${d.getMonth()+1})</p>
+        <p><b>الساعة:</b> ${b.hour}</p>
+        <button class="cancel-btn" id="cancelBtn">إلغاء الحجز</button>
+      `;
+      details.style.display="block";
+      document.getElementById("cancelBtn").onclick=()=>cancelBooking(b);
+    }
+
+    async function cancelBooking(b){
+      await remove(ref(db, `bookings/${b.slotKey}/${b.bookingId}`));
+      localStorage.removeItem("myBooking");
+      myBooking=null;
+      showToast("❌ تم إلغاء الحجز");
+      details.style.display="none";
+      info.style.display="none";
+      updateHours();
+    }
+
+    populateDays();
+    populateHours();
+  </script>
+</body>
+</html>
