@@ -6,108 +6,225 @@
   <title>لوحة الحلاق - صالون التميز</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* ================================
+       المتغيرات الأساسية
+       ================================ */
     :root {
-      --primary: #00d9c0;
-      --accent: #22d97a;
+      --primary: #00d9ff;        /* أزرق كهربائي */
+      --aqua: #00ffff;           /* أكوا للنصوص */
       --bg-dark: #0a0f24;
-      --card-bg: #0d1326;
-      --text-light: #e2e8f0;
-      --text-muted: #a3bffa;
-      --danger: #ef4444;
+      --card-bg: rgba(10, 15, 36, 0.85);
+      --text-light: #f1f5f9;
+      --text-muted: #94a3b8;
+      --danger: #dc2626;
+      --success: #06b6d4;
     }
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
-    body{
-      background:radial-gradient(circle at top,#0a0f24 0%,#050817 100%);
-      color:var(--text-light);
-      min-height:100vh;
-      padding:20px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', sans-serif;
     }
-    h1{
-      color:var(--primary);
-      margin:20px 0 10px;
-      font-size:2rem;
-      font-weight:800;
-      text-shadow:0 0 20px rgba(0,217,192,0.5);
+
+    body {
+      background: radial-gradient(circle at top, #0a0f24 0%, #050817 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.6;
     }
-    .subtitle{color:var(--text-muted);margin-bottom:25px;font-weight:500}
-    .booking-card{
-      background:var(--card-bg);
-      border:2px solid var(--primary);
-      border-radius:18px;
-      padding:18px 20px;
-      margin-bottom:16px;
-      width:100%;
-      max-width:500px;
-      box-shadow:inset 0 0 20px rgba(0,217,192,0.3),0 0 25px rgba(0,217,192,0.25);
-      transition:.3s;
+
+    /* ================================
+       العنوان
+       ================================ */
+    h1 {
+      color: var(--primary);
+      margin: 20px 0 10px;
+      font-size: 2rem;
+      font-weight: 800;
+      text-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
     }
-    .booking-card:hover{transform:translateY(-4px);box-shadow:0 0 40px rgba(0,217,192,0.45)}
-    .booking-card p{margin:6px 0;font-size:1rem}
-    .booking-card b{color:var(--primary)}
-    .cancel-btn{
-      background:var(--danger);
-      color:white;
-      border:none;
-      padding:10px 24px;
-      border-radius:10px;
-      cursor:pointer;
-      margin-top:10px;
-      font-weight:600;
-      width:100%;
-      transition:.3s;
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+      font-weight: 500;
+      font-size: 1.05rem;
     }
-    .cancel-btn:hover{background:#dc2626}
-    .no-bookings{
-      margin-top:40px;
-      font-size:1.1rem;
-      color:var(--text-muted);
-      text-align:center;
+
+    /* ================================
+       زر التحديث
+       ================================ */
+    .refresh-btn {
+      background: linear-gradient(135deg, #00c3ff, #00ffff, #0099cc);
+      border: none;
+      color: white;
+      padding: 14px 30px;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 25px rgba(0, 217, 255, 0.4);
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .refresh-btn{
-      background:linear-gradient(135deg,var(--primary),var(--accent));
-      border:none;
-      color:white;
-      padding:12px 26px;
-      border-radius:14px;
-      font-size:1.05rem;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 6px 20px rgba(0,217,192,0.3);
-      margin-bottom:20px;
-      transition:.3s;
+
+    .refresh-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(0, 217, 255, 0.6);
+      background: linear-gradient(135deg, #00ffff, #00c3ff, #0099cc);
     }
-    .refresh-btn:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,217,192,0.45)}
-    .toast{
-      position:fixed;
-      top:50%;
-      left:50%;
-      transform:translate(-50%,-50%) scale(0.8);
-      background:linear-gradient(135deg,#10b981,#059669);
-      color:white;
-      padding:20px 28px;
-      border-radius:18px;
-      box-shadow:0 15px 40px rgba(16,185,129,.4);
-      z-index:10000;
-      font-weight:700;
-      font-size:1.1rem;
-      opacity:0;
-      pointer-events:none;
-      transition:.4s;
+
+    /* ================================
+       بطاقة الحجز
+       ================================ */
+    .booking-card {
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 
+        inset 0 0 20px rgba(0, 217, 255, 0.2),
+        0 0 25px rgba(0, 217, 255, 0.3);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
     }
-    .toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+    .booking-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 
+        inset 0 0 30px rgba(0, 217, 255, 0.3),
+        0 0 40px rgba(0, 217, 255, 0.5);
+    }
+
+    .booking-card p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: var(--aqua);
+    }
+
+    .booking-card b {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .status {
+      font-weight: 700;
+      padding: 6px 0;
+      font-size: 1.05rem;
+    }
+
+    .status.upcoming {
+      color: var(--primary);
+      text-shadow: 0 0 8px rgba(0, 217, 255, 0.6);
+    }
+
+    .status.past {
+      color: var(--danger);
+      text-shadow: 0 0 8px rgba(220, 38, 38, 0.5);
+    }
+
+    /* ================================
+       زر الإلغاء
+       ================================ */
+    .cancel-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 14px;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .cancel-btn:hover {
+      background: #b91c1c;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+    }
+
+    /* ================================
+       لا توجد حجوزات
+       ================================ */
+    .no-bookings {
+      margin-top: 50px;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 30px;
+      background: rgba(10, 15, 36, 0.6);
+      border-radius: 16px;
+      border: 1px dashed var(--primary);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* ================================
+       رسالة النجاح (Toast)
+       ================================ */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: white;
+      padding: 22px 32px;
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(6, 182, 212, 0.5);
+      z-index: 10000;
+      font-weight: 700;
+      font-size: 1.1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s ease;
+      border: 1.5px solid var(--primary);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* تأثير التحديث */
+    @keyframes pulse {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    .refreshing {
+      animation: pulse 1.5s infinite;
+    }
   </style>
 </head>
 <body>
-  <h1>لوحة الحلاق 💈</h1>
-  <p class="subtitle">مرحبًا بك في نظام الحجوزات الذكي</p>
+  <h1>لوحة الحلاق</h1>
+  <p class="subtitle">إدارة الحجوزات بذكاء وأناقة</p>
 
-  <button class="refresh-btn" id="refreshBtn">🔄 تحديث القائمة</button>
+  <button class="refresh-btn" id="refreshBtn">
+    تحديث القائمة
+  </button>
 
   <div id="bookingsContainer"></div>
-  <p id="noBookings" class="no-bookings" style="display:none;">لا توجد حجوزات حالياً 🚫</p>
+  <p id="noBookings" class="no-bookings" style="display:none;">
+    لا توجد حجوزات حالياً
+  </p>
 
   <div id="toast" class="toast"></div>
 
@@ -136,7 +253,7 @@
     function showToast(msg) {
       toast.textContent = msg;
       toast.classList.add("show");
-      setTimeout(()=>toast.classList.remove("show"),3000);
+      setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
     function renderBookings(data) {
@@ -148,57 +265,74 @@
       noBookings.style.display = "none";
 
       const today = new Date();
-
-      // ترتيب الحجوزات من الأحدث للأقدم
       const allBookings = [];
+
       for (const slotKey in data) {
         for (const bookingId in data[slotKey]) {
           const b = data[slotKey][bookingId];
           const [dayISO, time] = slotKey.split("_");
-          const date = new Date(`${dayISO}T${time}`);
+          const date = new Date(`${dayISO}T${time}:00`);
           allBookings.push({ ...b, slotKey, bookingId, dayISO, time, date });
         }
       }
 
-      allBookings.sort((a,b)=> a.date - b.date);
+      // ترتيب من الأقرب للأبعد
+      allBookings.sort((a, b) => a.date - b.date);
 
-      for (const b of allBookings) {
+      allBookings.forEach(b => {
         const isPast = b.date < today;
         const card = document.createElement("div");
         card.className = "booking-card";
+
+        const dayName = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(b.dayISO).getDay()];
+        const displayDate = `${dayName} (${b.dayISO.split('-')[2]}/${b.dayISO.split('-')[1]})`;
+
         card.innerHTML = `
           <p><b>الاسم:</b> ${b.name}</p>
           <p><b>الخدمة:</b> ${b.service}</p>
-          <p><b>اليوم:</b> ${b.dayISO}</p>
+          <p><b>التاريخ:</b> ${displayDate}</p>
           <p><b>الساعة:</b> ${b.time}</p>
-          <p style="color:${isPast ? '#ef4444' : '#22d97a'};font-weight:700;">
-            ${isPast ? "⏰ الموعد انتهى" : "✅ موعد قادم"}
+          <p class="status ${isPast ? 'past' : 'upcoming'}">
+            ${isPast ? "الموعد انتهى" : "موعد قادم"}
           </p>
           <button class="cancel-btn">إلغاء الحجز</button>
         `;
 
-        card.querySelector(".cancel-btn").onclick = async ()=>{
-          await remove(ref(db, `bookings/${b.slotKey}/${b.bookingId}`));
-          showToast("❌ تم حذف الحجز بنجاح");
+        card.querySelector(".cancel-btn").onclick = async () => {
+          try {
+            await remove(ref(db, `bookings/${b.slotKey}/${b.bookingId}`));
+            showToast("تم إلغاء الحجز بنجاح");
+            card.style.animation = "pulse 0.6s";
+            setTimeout(() => card.remove(), 600);
+          } catch (err) {
+            showToast("فشل في الإلغاء، حاول لاحقًا");
+          }
         };
 
         bookingsContainer.appendChild(card);
-      }
-    }
-
-    function loadBookings(){
-      const bookingsRef = ref(db,"bookings");
-      onValue(bookingsRef, snapshot => {
-        const data = snapshot.val();
-        renderBookings(data);
       });
     }
 
-    refreshBtn.addEventListener("click", ()=>{
-      showToast("🔄 تم تحديث القائمة");
+    function loadBookings() {
+      refreshBtn.classList.add("refreshing");
+      const bookingsRef = ref(db, "bookings");
+      
+      onValue(bookingsRef, snapshot => {
+        const data = snapshot.val();
+        renderBookings(data);
+        refreshBtn.classList.remove("refreshing");
+      }, { onlyOnce: false });
+    }
+
+    refreshBtn.addEventListener("click", () => {
+      showToast("جاري تحديث القائمة...");
       loadBookings();
     });
 
+    // تحديث تلقائي كل 30 ثانية
+    setInterval(loadBookings, 30000);
+
+    // تحميل أولي
     loadBookings();
   </script>
 </body>
