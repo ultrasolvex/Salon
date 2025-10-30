@@ -4,297 +4,288 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>صالون التميز - الحجز الفاخر</title>
+  <meta name="theme-color" content="#02051a">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ================================
-       المتغيرات الأساسية (سهلة التعديل)
-       ================================ */
     :root {
-      --primary: #00d9ff;        /* أزرق كهربائي متوهج */
-      --aqua: #00ffff;           /* أكوا (للنصوص والكتابة) */
-      --bg-dark: #0a0f24;
-      --card-bg: rgba(10, 15, 36, 0.8);
-      --text-light: #f1f5f9;
-      --text-muted: #94a3b8;
-      --danger: #dc2626;
+      --primary1: #6a00ff; /* بنفسجي فخم */
+      --primary2: #00d9ff; /* أزرق كهربائي */
+      --dark-bg: #02051a; /* كحلي غامق فاخر */
+      --text-color: #cce8ff;
+      --input-bg: #070c24;
+      --glow-purple: rgba(130, 0, 255, 0.7);
+      --aqua-glow: #00ffff; /* أكوا لامع */
+      --aqua-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2);
+      --accent-fallback: #8a6bff; /* لون احتياطي للمتصفحات التي لا تدعم gradient text */
     }
 
-    /* ================================
-       إعدادات عامة
-       ================================ */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Tajawal', sans-serif;
-    }
-
+    /* Base reset + تحسين العرض عبر متصفحات */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal', sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    html, body { height: 100%; }
     body {
-      background: radial-gradient(circle at top, #0a0f24 0%, #050817 100%);
-      color: var(--text-light);
+      background: radial-gradient(circle at top, #03061f 0%, var(--dark-bg) 100%);
+      color: var(--text-color);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-      font-size: 1rem;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:15px;
     }
 
-    /* ================================
-       الكونتينر الرئيسي (الكارت)
-       ================================ */
+    /* اجبار مظهر موحَّد للحقول لتجنب تغييرات المتصفح */
+    input, select, textarea, button {
+      -webkit-appearance: none;
+      appearance: none;
+      background-clip: padding-box;
+      caret-color: var(--aqua-glow);
+      color: var(--aqua-glow);
+      font-family: inherit;
+    }
+
     .container {
-      background: var(--card-bg);
+      background: rgba(10, 12, 30, 0.92);
       padding: 28px 22px;
       border-radius: 22px;
-      border: 2px solid var(--primary);
-      box-shadow: 
-        0 0 25px rgba(0, 217, 255, 0.3),
-        inset 0 0 15px rgba(0, 217, 255, 0.1);
+      border: 2px solid var(--primary2);
+      box-shadow:
+        inset 0 0 30px var(--glow-purple),
+        inset 0 0 60px rgba(0,217,255,0.18),
+        0 0 35px rgba(0,0,50,0.45);
       max-width: 460px;
       width: 100%;
       text-align: center;
+      backdrop-filter: blur(10px);
       position: relative;
-      backdrop-filter: blur(12px);
-      animation: pulseGlow 2.5s ease-in-out infinite alternate;
     }
 
-    @keyframes pulseGlow {
-      from {
-        box-shadow: 
-          0 0 25px rgba(0, 217, 255, 0.3),
-          inset 0 0 15px rgba(0, 217, 255, 0.1);
-      }
-      to {
-        box-shadow: 
-          0 0 40px rgba(0, 217, 255, 0.5),
-          inset 0 0 25px rgba(0, 217, 255, 0.2);
-      }
-    }
-
-    /* ================================
-       العنوان الرئيسي
-       ================================ */
-    h1 {
-      color: var(--primary);
-      margin-bottom: 12px;
-      font-size: 1.9rem;
+    /* Gradient text مع fallback */
+    h1, .details-card h3, label {
+      color: var(--accent-fallback);
       font-weight: 800;
-      text-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
     }
-
-    .subtitle {
-      color: var(--text-muted);
-      font-size: .95rem;
-      margin-bottom: 24px;
-      font-weight: 500;
+    @supports (background-clip: text) or (-webkit-background-clip: text) {
+      h1, .details-card h3, label {
+        background: linear-gradient(135deg, var(--primary1), var(--primary2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        text-shadow: 0 0 10px var(--glow-purple), 0 0 25px rgba(0,217,255,0.28);
+      }
     }
-
-    /* ================================
-       الـ Labels
-       ================================ */
     label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--aqua);
-      font-weight: 600;
-      text-align: right;
-      text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+      background: linear-gradient(90deg, var(--primary1), var(--primary2));
     }
 
-    /* ================================
-       الحقول (input & select)
-       ================================ */
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      display:inline-block;
+    }
+    .subtitle { color: var(--text-color); font-size:1.05rem; margin-bottom:24px; opacity:0.88; }
+
+    label {
+      display:block;
+      margin-bottom:6px;
+      font-weight:600;
+      text-align:right;
+      direction:rtl;
+    }
+
+    /* Generic inputs/selects */
     input, select {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid transparent;
-      background: #050a1b;
-      border-radius: 14px;
-      color: var(--aqua) !important;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      margin-bottom: 16px;
-      box-shadow: 0 0 15px rgba(0, 217, 255, 0.2);
-    }
-
-    input::placeholder, select option {
-      color: rgba(0, 255, 255, 0.5) !important;
-      font-weight: 500;
-    }
-
-    /* تأثير التركيز */
-    input:focus, select:focus {
+      width:100%;
+      padding:14px 16px;
+      border:2px solid var(--primary2);
+      border-radius:14px;
+      background: var(--input-bg) !important;
+      color: var(--aqua-glow) !important;
+      font-size:1rem;
+      transition: all 0.28s ease;
+      margin-bottom:18px;
+      box-shadow: inset 0 0 20px rgba(130,0,255,0.28);
+      text-shadow: var(--aqua-shadow);
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
-      transform: scale(1.02);
-      background: #0a1025;
     }
 
-    /* ================================
-       زر الحجز
-       ================================ */
+    input::placeholder { color: rgba(0,255,255,0.45); text-shadow:none; }
+
+    input:not(:placeholder-shown),
+    select option:checked:not([value=""]) {
+      box-shadow: inset 0 0 35px var(--glow-purple);
+      text-shadow: var(--aqua-shadow);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary1);
+      box-shadow:
+        inset 0 0 35px var(--glow-purple),
+        0 0 10px rgba(0,217,255,0.06);
+      transform: scale(1.01);
+      text-shadow: var(--aqua-shadow);
+      outline: 3px solid rgba(106,0,255,0.08);
+    }
+
+    /* زر الحجز */
     button[type="submit"] {
-      background: linear-gradient(135deg, #00c3ff, #0099cc, #00ffff);
+      background: linear-gradient(135deg, var(--primary1), var(--primary2));
       color: white;
-      border: none;
-      padding: 15px 32px;
-      font-size: 1.15rem;
-      font-weight: 700;
-      border-radius: 16px;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(0, 217, 255, 0.4);
-      margin-top: 24px;
+      border:none;
+      padding:15px 32px;
+      font-size:1.15rem;
+      font-weight:700;
+      border-radius:16px;
+      cursor:pointer;
+      width:100%;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow:
+        inset 0 0 25px rgba(130,0,255,0.6),
+        0 0 30px rgba(0,217,255,0.36);
+      margin-top:24px;
     }
+    button[type="submit"]:hover { transform: scale(1.04); box-shadow: inset 0 0 40px rgba(130,0,255,0.9), 0 0 45px rgba(0,217,255,0.55); }
 
-    button[type="submit"]:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 35px rgba(0, 217, 255, 0.6);
-      background: linear-gradient(135deg, #00ffff, #00c3ff, #0099cc);
-    }
-
-    /* ================================
-       صندوق معلومات الحجز
-       ================================ */
     .booking-info {
       margin: 16px 0 8px;
-      padding: 14px;
+      padding: 12px;
       border-radius: 12px;
       font-weight: 600;
-      background: rgba(0, 217, 255, 0.15);
-      border: 1.5px solid var(--primary);
-      color: var(--aqua);
-      cursor: pointer;
+      background: rgba(100,0,255,0.12);
+      border: 1px solid var(--primary2);
+      color: var(--primary2);
       display: none;
-      text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
-      transition: all 0.3s;
+      box-shadow: inset 0 0 20px rgba(100,0,255,0.25);
+      cursor: pointer;
     }
 
-    .booking-info:hover {
-      background: rgba(0, 217, 255, 0.25);
-      transform: scale(1.02);
-    }
-
-    /* ================================
-       بطاقة التفاصيل
-       ================================ */
     .details-card {
-      background: rgba(10, 16, 37, 0.95);
-      border: 1.5px solid var(--primary);
+      background: rgba(3,5,20,0.95);
+      border: 1.5px solid var(--primary2);
       border-radius: 16px;
       padding: 22px;
       margin-top: 18px;
       display: none;
-      box-shadow: 0 0 25px rgba(0, 217, 255, 0.3);
-      color: var(--text-light);
+      box-shadow: inset 0 0 40px rgba(130,0,255,0.28);
+      text-align: right;
+      direction: rtl;
     }
+    .details-card h3 { margin-bottom: 14px; font-size:1.15rem; display:inline-block; }
 
-    .details-card h3 {
-      color: var(--primary);
-      margin-bottom: 14px;
-      font-size: 1.2rem;
-      text-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
-    }
+    .cancel-btn { background: linear-gradient(135deg, #ff1744, #ff4081); color:white; padding:10px 24px; border:none; border-radius:10px; cursor:pointer; margin-top:16px; font-weight:600; transition: all 0.25s ease; box-shadow: inset 0 0 25px rgba(255,20,80,0.38); }
+    .cancel-btn:hover { box-shadow: inset 0 0 35px rgba(255,0,100,0.7); transform: scale(1.05); }
 
-    .details-card p {
-      color: var(--aqua);
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    /* ================================
-       زر الإلغاء
-       ================================ */
-    .cancel-btn {
-      background: var(--danger);
-      color: white;
-      padding: 10px 24px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 16px;
-      font-weight: 600;
-      transition: all 0.3s;
-    }
-
-    .cancel-btn:hover {
-      background: #b91c1c;
-      transform: translateY(-2px);
-    }
-
-    /* ================================
-       رسالة النجاح (Toast)
-       ================================ */
     .success-toast {
-      position: fixed;
+      position: fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.86);
+      background: linear-gradient(135deg, var(--primary1), var(--primary2));
+      color:white; padding:18px 26px; border-radius:16px;
+      box-shadow: inset 0 0 25px rgba(130,0,255,0.6), 0 0 40px rgba(0,217,255,0.45);
+      z-index:10000; text-align:center; font-weight:700; font-size:1.05rem; opacity:0; pointer-events:none; transition: all 0.34s ease;
+    }
+    .success-toast.show { opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
+
+    select#hour { margin-bottom: 28px !important; }
+
+    /* ---- ازالة الخلفية الافتراضية عند autofill (Chrome/Edge/WebKit) ---- */
+    input:-webkit-autofill,
+    textarea:-webkit-autofill,
+    select:-webkit-autofill {
+      -webkit-text-fill-color: var(--aqua-glow) !important;
+      -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+      box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+    }
+
+    /* Firefox autofill */
+    input:-moz-autofill,
+    textarea:-moz-autofill,
+    select:-moz-autofill {
+      box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+      -moz-text-fill-color: var(--aqua-glow) !important;
+    }
+
+    /* ازالة سهم default في IE/Edge القديمة */
+    select::-ms-expand { display:none; }
+
+    /* Custom select wrapper to show an SVG arrow consistently (RTL: arrow on left) */
+    .select-wrapper { position: relative; display: block; width: 100%; }
+    .select-wrapper svg {
+      position: absolute;
+      left: 12px; /* Arrow on left for RTL */
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      background: linear-gradient(135deg, #06b6d4, #0891b2);
-      color: white;
-      padding: 22px 32px;
-      border-radius: 18px;
-      box-shadow: 0 15px 40px rgba(6, 182, 212, 0.5);
-      z-index: 10000;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1.1rem;
-      opacity: 0;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
       pointer-events: none;
-      transition: all 0.4s ease;
-      border: 1.5px solid var(--primary);
+      opacity: 0.95;
+      filter: drop-shadow(0 0 6px rgba(0,217,255,0.12));
+      color: var(--aqua-glow);
+    }
+    /* add padding to avoid overlap with svg (left side because dir=rtl) */
+    .select-wrapper select { padding-left: 44px; }
+
+    /* small responsive tweak */
+    @media (max-width:420px) {
+      .container { padding: 20px 16px; border-radius: 18px; }
+      h1 { font-size: 1.6rem; }
+      button[type="submit"] { padding:12px 20px; font-size:1rem; }
     }
 
-    .success-toast.show {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    /* مسافة أكبر قبل الزر */
-    select#hour {
-      margin-bottom: 28px !important;
+    /* reduced motion accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; transform: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>صالون التميز</h1>
-    <p class="subtitle">تجربة فاخرة بمعايير عالمية</p>
+  <div class="container" role="main" aria-labelledby="pageTitle">
+    <h1 id="pageTitle">صالون التميز</h1>
+    <p class="subtitle">تجربة فاخرة بلمسة تقنية</p>
 
-    <div id="bookingInfo" class="booking-info"></div>
-    <div id="detailsCard" class="details-card"></div>
+    <div id="bookingInfo" class="booking-info" role="status" aria-live="polite" tabindex="0" style="display:none;"></div>
+    <div id="detailsCard" class="details-card" aria-hidden="true"></div>
 
-    <form id="bookingForm">
+    <form id="bookingForm" autocomplete="off" novalidate>
       <label for="name">الاسم الكامل</label>
-      <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
+      <input type="text" id="name" name="name" required placeholder="أدخل اسمك الكامل" autocomplete="name" />
 
       <label for="service">نوع الخدمة</label>
-      <select id="service" required>
-        <option value="">اختر الخدمة المطلوبة</option>
-        <option value="قص شعر VIP">قص شعر VIP</option>
-        <option value="حلاقة ذقن ملكية">حلاقة ذقن ملكية</option>
-        <option value="صبغة فاخرة">صبغة فاخرة</option>
-        <option value="عناية بالبشرة">عناية بالبشرة</option>
-      </select>
+      <div class="select-wrapper" aria-hidden="false">
+        <!-- SVG arrow (uses currentColor) -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <select id="service" name="service" required autocomplete="off" aria-label="نوع الخدمة">
+          <option value="">اختر الخدمة</option>
+          <option value="قص شعر VIP">قص شعر VIP</option>
+          <option value="حلاقة ذقن ملكية">حلاقة ذقن ملكية</option>
+          <option value="صبغة فاخرة">صبغة فاخرة</option>
+          <option value="عناية بالبشرة">عناية بالبشرة</option>
+        </select>
+      </div>
 
       <label for="day">اختر اليوم</label>
-      <select id="day" required></select>
+      <div class="select-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <select id="day" name="day" required autocomplete="off" aria-label="اختر اليوم"></select>
+      </div>
 
       <label for="hour">اختر الساعة</label>
-      <select id="hour" required></select>
+      <div class="select-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <select id="hour" name="hour" required autocomplete="off" aria-label="اختر الساعة"></select>
+      </div>
 
-      <button type="submit">تأكيد الحجز الآن</button>
+      <button type="submit" aria-label="احجز الآن">احجز الآن</button>
     </form>
   </div>
 
-  <div id="successToast" class="success-toast"></div>
+  <div id="successToast" class="success-toast" role="status" aria-live="polite"></div>
 
-  <!-- ================================
-       سكريبت Firebase (بدون تغيير)
-       ================================ -->
+  <!-- Firebase Script (كما في كودك، لم يتم تغييره) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
     import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
@@ -321,6 +312,7 @@
     const form = document.getElementById("bookingForm");
 
     function showToast(msg) {
+      // show small toast
       toast.textContent = msg;
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 3000);
@@ -341,7 +333,7 @@
     }
 
     function populateHours() {
-      hoursSelect.innerHTML = "<option value=''>اختر الساعة المناسبة</option>";
+      hoursSelect.innerHTML = "<option value=''>اختر الساعة</option>";
       for (let h = 9; h <= 21; h++) {
         const opt = document.createElement("option");
         opt.value = `${h}:00`;
@@ -357,19 +349,24 @@
     onValue(bookingsRef, snap => {
       currentBookings = snap.val() || {};
       updateHours();
-      if (myBooking && !currentBookings[myBooking.slotKey]) {
-        showToast("تم إلغاء حجزك من قبل إدارة الصالون");
-        localStorage.removeItem("myBooking");
-        myBooking = null;
-        info.style.display = "none";
-        details.style.display = "none";
+      // if our saved booking no longer exists in DB, notify user
+      if (myBooking) {
+        // slotKey exists in DB but may be empty object or removed
+        if (!currentBookings[myBooking.slotKey]) {
+          showToast("تم إلغاء حجزك بواسطة الصالون");
+          localStorage.removeItem("myBooking");
+          myBooking = null;
+          info.style.display = "none";
+          info.setAttribute("aria-hidden", "true");
+          details.style.display = "none";
+          details.setAttribute("aria-hidden", "true");
+        }
       }
     });
 
     function updateHours() {
       const selectedDay = daysSelect.value;
       if (!selectedDay) return;
-
       const now = new Date();
       const todayISO = now.toISOString().slice(0, 10);
 
@@ -377,44 +374,36 @@
         if (!opt.value) return;
         const key = `${selectedDay}_${opt.value}`;
         const [hour] = opt.value.split(":");
-        const isPast = (selectedDay === todayISO && parseInt(hour) <= now.getHours());
-        opt.disabled = currentBookings[key] || isPast;
-        opt.style.opacity = opt.disabled ? ".4" : "1";
+        const isPast = (selectedDay === todayISO && parseInt(hour, 10) <= now.getHours());
+        // currentBookings[key] may be an object (multiple booking entries) or truthy
+        opt.disabled = Boolean(currentBookings[key]) || isPast;
+        opt.style.opacity = opt.disabled ? ".42" : "1";
       });
     }
 
-    daysSelect.addEventListener("change", updateHours);
+    daysSelect.addEventListener("change", () => {
+      updateHours();
+    });
 
     if (myBooking) showInfo(myBooking);
 
     form.addEventListener("submit", async e => {
       e.preventDefault();
-
       const name = document.getElementById("name").value.trim();
       const service = document.getElementById("service").value;
       const day = daysSelect.value;
       const hour = hoursSelect.value;
+      if (!name || !service || !day || !hour) return showToast("يرجى ملء جميع الحقول.");
 
-      if (!name || !service || !day || !hour) return;
       const slotKey = `${day}_${hour}`;
-
-      if (currentBookings[slotKey]) {
-        showToast("عذرًا، هذا الموعد محجوز بالفعل");
-        return;
-      }
+      if (currentBookings[slotKey]) return alert("عذرًا، هذا الموعد محجوز.");
 
       const bookingId = Date.now().toString();
-
-      await set(ref(db, `bookings/${slotKey}/${bookingId}`), {
-        name,
-        service,
-        timestamp: new Date().toISOString()
-      });
+      await set(ref(db, `bookings/${slotKey}/${bookingId}`), { name, service, timestamp: new Date().toISOString() });
 
       myBooking = { name, service, day, hour, slotKey, bookingId };
       localStorage.setItem("myBooking", JSON.stringify(myBooking));
-
-      showToast("تم تأكيد حجزك بنجاح، ننتظرك!");
+      showToast("تم الحجز بنجاح ✨");
       showInfo(myBooking);
       form.reset();
       populateDays();
@@ -423,6 +412,7 @@
 
     function showInfo(b) {
       info.style.display = "block";
+      info.setAttribute("aria-hidden", "false");
       info.textContent = "لديك حجز نشط - اضغط لعرض التفاصيل";
       info.onclick = () => showDetails(b);
     }
@@ -431,28 +421,58 @@
       const d = new Date(b.day);
       details.innerHTML = `
         <h3>تفاصيل الحجز</h3>
-        <p><b>الاسم:</b> ${b.name}</p>
-        <p><b>الخدمة:</b> ${b.service}</p>
+        <p><b>الاسم:</b> ${escapeHtml(b.name)}</p>
+        <p><b>الخدمة:</b> ${escapeHtml(b.service)}</p>
         <p><b>اليوم:</b> ${days[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})</p>
         <p><b>الساعة:</b> ${b.hour}</p>
         <button class="cancel-btn" id="cancelBtn">إلغاء الحجز</button>
       `;
       details.style.display = "block";
+      details.setAttribute("aria-hidden", "false");
       document.getElementById("cancelBtn").onclick = () => cancelBooking(b);
+      // focus detail for screen readers
+      details.focus?.();
     }
 
     async function cancelBooking(b) {
-      await remove(ref(db, `bookings/${b.slotKey}/${b.bookingId}`));
+      try {
+        await remove(ref(db, `bookings/${b.slotKey}/${b.bookingId}`));
+      } catch (err) {
+        console.error("Error removing booking:", err);
+      }
       localStorage.removeItem("myBooking");
       myBooking = null;
-      showToast("تم إلغاء الحجز بنجاح");
+      showToast("تم إلغاء الحجز ❌");
       details.style.display = "none";
+      details.setAttribute("aria-hidden", "true");
       info.style.display = "none";
+      info.setAttribute("aria-hidden", "true");
       updateHours();
     }
 
+    // small helper to avoid XSS injection in template
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // init
     populateDays();
     populateHours();
+
+    // accessibility: allow keyboard showing details from booking info
+    info.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const saved = JSON.parse(localStorage.getItem("myBooking"));
+        if (saved) showDetails(saved);
+      }
+    });
   </script>
 </body>
 </html>
