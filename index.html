@@ -7,14 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary1: #6a00ff; /* بنفسجي فخم */
-      --primary2: #00d9ff; /* أزرق كهربائي */
-      --dark-bg: #02051a; /* كحلي غامق فاخر */
-      --text-color: #cce8ff;
-      --input-bg: #070c24;
-      --glow-purple: rgba(130, 0, 255, 0.7);
-      --aqua-glow: #00ffff; /* أكوا لامع، هادئ، فخم، راقي */
-      --aqua-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2); /* لمعان هادئ وفخم للنص */
+      --primary: #00d9ff; /* أزرق كهربائي */
+      --accent: #00bcd4;  /* أكوا */
+      --text: #8afcff;
+      --bg-dark: #050817;
+      --input-bg: #0a1024;
+      --error: #ff1744;   /* لون رسائل الخطأ */
     }
 
     * {
@@ -25,170 +23,176 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #03061f 0%, var(--dark-bg) 100%);
-      color: var(--text-color);
+      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      color: var(--text);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 15px;
+      padding-bottom: 80px; /* مساحة للدوك */
     }
 
     .container {
-      background: rgba(10, 12, 30, 0.9);
+      background: rgba(10,15,40,0.8);
       padding: 28px 22px;
       border-radius: 22px;
-      border: 2px solid var(--primary2);
-      box-shadow:
-        inset 0 0 30px var(--glow-purple),
-        inset 0 0 60px rgba(0,217,255,0.25),
-        0 0 35px rgba(0,0,50,0.4);
+      border: 2px solid var(--primary);
+      box-shadow: 
+        inset 0 0 25px rgba(0,217,255,0.25),
+        0 0 35px rgba(0,217,255,0.25);
       max-width: 460px;
       width: 100%;
       text-align: center;
-      backdrop-filter: blur(12px);
       position: relative;
+      backdrop-filter: blur(10px);
+      margin: 20px auto;
     }
 
     h1 {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--primary1), var(--primary2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
-      font-size: 2rem;
-      font-weight: 800;
+      color: var(--primary);
       margin-bottom: 10px;
-      text-shadow: 0 0 10px var(--glow-purple), 0 0 25px rgba(0,217,255,0.3);
+      font-size: 1.9rem;
+      font-weight: 800;
+      text-shadow: 0 0 15px rgba(0,217,255,0.6), 0 0 30px rgba(0,217,255,0.3);
     }
 
     .subtitle {
-      color: var(--text-color);
-      font-size: 1.05rem;
+      color: var(--text);
+      font-size: 1rem;
       margin-bottom: 24px;
-      opacity: 0.85;
+      opacity: 0.8;
     }
 
     label {
       display: block;
       margin-bottom: 6px;
+      color: var(--accent);
       font-weight: 600;
       text-align: right;
-      direction: rtl;
-      background: linear-gradient(90deg, var(--primary1), var(--primary2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
     }
 
+    /* تحسينات خانات الإدخال */
     input, select {
       width: 100%;
       padding: 14px 16px;
-      border: 2px solid var(--primary2);
-      border-radius: 14px;
+      border: 2px solid var(--primary);
+      border-radius: 14px; /* زوايا دائرية متناسقة */
       background: var(--input-bg);
-      color: var(--aqua-glow); /* لون النص أكوا لامع، هادئ، فخم، راقي */
+      color: var(--accent);
       font-size: 1rem;
       transition: all 0.3s ease;
       margin-bottom: 18px;
-      box-shadow: inset 0 0 20px rgba(130,0,255,0.3); /* شادو بنفسجي دائم */
-      text-shadow: var(--aqua-shadow); /* لمعان هادئ وفخم للنص */
+    }
+
+    /* تحسين حالات الإدخال المختلفة - إزالة اللون الأخضر */
+    input.valid {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(0,217,255,0.3);
+    }
+
+    input.invalid {
+      border-color: var(--error);
+      box-shadow: 0 0 10px rgba(255,23,68,0.3);
     }
 
     input::placeholder {
-      color: rgba(0, 255, 255, 0.5); /* بليس هولدر أكوا خفيف */
-      text-shadow: none;
-    }
-
-    input:not(:placeholder-shown),
-    select option:selected:not([value=""]) {
-      box-shadow: inset 0 0 35px var(--glow-purple); /* شادو بنفسجي قوي عند الملء */
-      text-shadow: var(--aqua-shadow); /* لمعان مستمر للنص عند الملء */
+      color: rgba(0,217,255,0.5);
     }
 
     input:focus, select:focus {
       outline: none;
-      border-color: var(--primary1);
-      box-shadow: inset 0 0 35px var(--glow-purple);
+      border-color: #00ffff;
+      box-shadow: 0 0 20px rgba(0,255,255,0.4);
       transform: scale(1.02);
-      text-shadow: var(--aqua-shadow); /* لمعان أثناء التركيز */
     }
 
-    button[type="submit"] {
-      background: linear-gradient(135deg, var(--primary1), var(--primary2));
+    /* رسائل الخطأ */
+    .error-message {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: -12px;
+      margin-bottom: 15px;
+      text-align: right;
+      display: none;
+      font-weight: 600;
+    }
+
+    .char-counter {
+      color: var(--accent);
+      font-size: 0.8rem;
+      text-align: left;
+      margin-top: -15px;
+      margin-bottom: 15px;
+      direction: ltr;
+    }
+
+    button[type="submit"], .login-btn {
+      background: linear-gradient(135deg, #00d9ff, #00bcd4);
       color: white;
       border: none;
       padding: 15px 32px;
       font-size: 1.15rem;
       font-weight: 700;
-      border-radius: 16px;
+      border-radius: 16px; /* زوايا دائرية متناسقة */
       cursor: pointer;
       width: 100%;
-      transition: all 0.35s ease;
-      box-shadow:
-        inset 0 0 25px rgba(130,0,255,0.6),
-        0 0 30px rgba(0,217,255,0.4);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0,217,255,0.3);
       margin-top: 24px;
     }
 
-    button[type="submit"]:hover {
+    button[type="submit"]:hover, .login-btn:hover {
       transform: scale(1.05);
-      box-shadow:
-        inset 0 0 40px rgba(130,0,255,0.9),
-        0 0 45px rgba(0,217,255,0.6);
+      box-shadow: 0 0 40px rgba(0,255,255,0.5);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: 0 0 10px rgba(0,217,255,0.2) !important;
     }
 
     .booking-info {
       margin: 16px 0 8px;
       padding: 12px;
-      border-radius: 12px;
+      border-radius: 12px; /* زوايا دائرية متناسقة */
       font-weight: 600;
-      background: rgba(100,0,255,0.15);
-      border: 1px solid var(--primary2);
-      color: var(--primary2);
+      background: rgba(0,217,255,0.1);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      cursor: pointer;
       display: none;
-      box-shadow: inset 0 0 20px rgba(100,0,255,0.3);
     }
 
     .details-card {
-      background: rgba(3, 5, 20, 0.95);
-      border: 1.5px solid var(--primary2);
-      border-radius: 16px;
+      background: rgba(5,10,25,.95);
+      border: 1.5px solid var(--primary);
+      border-radius: 16px; /* زوايا دائرية متناسقة */
       padding: 22px;
       margin-top: 18px;
       display: none;
-      box-shadow: inset 0 0 40px rgba(130,0,255,0.35);
+      box-shadow: 0 0 20px rgba(0,217,255,0.2);
     }
 
     .details-card h3 {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--primary1), var(--primary2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
+      color: var(--accent);
       margin-bottom: 14px;
       font-size: 1.2rem;
     }
 
     .cancel-btn {
-      background: linear-gradient(135deg, #ff1744, #ff4081);
+      background: #ff1744;
       color: white;
       padding: 10px 24px;
       border: none;
-      border-radius: 10px;
+      border-radius: 10px; /* زوايا دائرية متناسقة */
       cursor: pointer;
       margin-top: 16px;
       font-weight: 600;
       transition: all 0.3s ease;
-      box-shadow: inset 0 0 25px rgba(255,20,80,0.4);
     }
 
     .cancel-btn:hover {
-      box-shadow: inset 0 0 35px rgba(255,0,100,0.7);
-      transform: scale(1.05);
+      background: #d50032;
     }
 
     .success-toast {
@@ -196,13 +200,11 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.8);
-      background: linear-gradient(135deg, var(--primary1), var(--primary2));
+      background: linear-gradient(135deg, #00d9ff, #00bcd4);
       color: white;
       padding: 20px 28px;
-      border-radius: 18px;
-      box-shadow:
-        inset 0 0 25px rgba(130,0,255,0.6),
-        0 0 40px rgba(0,217,255,0.5);
+      border-radius: 18px; /* زوايا دائرية متناسقة */
+      box-shadow: 0 0 40px rgba(0,255,255,0.5);
       z-index: 10000;
       text-align: center;
       font-weight: 700;
@@ -220,45 +222,594 @@
     select#hour {
       margin-bottom: 28px !important;
     }
+
+    /* شاشة تسجيل الدخول */
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .login-container {
+      background: rgba(10,15,40,0.9);
+      padding: 30px;
+      border-radius: 22px; /* زوايا دائرية متناسقة */
+      border: 2px solid var(--primary);
+      box-shadow: 
+        inset 0 0 25px rgba(0,217,255,0.25),
+        0 0 35px rgba(0,217,255,0.25);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-title {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+      text-shadow: 0 0 15px rgba(0,217,255,0.6);
+      font-weight: 800;
+    }
+
+    /* شريط التنقل السفلي - تصميم iOS */
+    .bottom-nav {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92%; /* أقل قليلاً من عرض الكارد */
+      max-width: 480px; /* أقل بـ 30px من الكارد (460px) */
+      background: rgba(5, 10, 25, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0,217,255,0.3);
+      border-radius: 30px; /* زوايا دائرية متناسقة */
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0; /* تقليل البادينج قليلاً */
+      z-index: 100;
+      box-shadow: 0 -5px 30px rgba(0,0,0,0.4), 0 0 20px rgba(0,217,255,0.2);
+      margin: 0 auto;
+    }
+
+    /* تحسين للأيقونات في الشاشات الصغيرة */
+    @media (max-width: 480px) {
+      .bottom-nav {
+        width: 90%; /* أقل عرض في الشاشات الصغيرة */
+        max-width: 400px;
+        padding: 8px 0;
+      }
+      
+      .nav-item {
+        padding: 6px 12px; /* تقليل البادينج الداخلي */
+      }
+      
+      .nav-icon {
+        font-size: 1.5rem; /* تصغير الأيقونات قليلاً */
+      }
+    }
+
+    /* تحسين خاص لـ iPhone 4S وأجهزة صغيرة جداً */
+    @media (max-width: 320px) {
+      .bottom-nav {
+        width: 88%;
+        max-width: 380px;
+        bottom: 10px;
+        padding: 6px 0;
+      }
+      
+      .nav-item {
+        padding: 4px 8px;
+      }
+      
+      .nav-icon {
+        font-size: 1.3rem;
+      }
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text);
+      font-size: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 12px; /* زوايا دائرية متناسقة */
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+      background: rgba(0,217,255,0.1);
+    }
+
+    .nav-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0;
+      filter: drop-shadow(0 0 5px rgba(0,217,255,0.3));
+    }
+
+    /* شاشة الملف الشخصي */
+    .profile-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+      padding-bottom: 80px; /* مساحة للدوك */
+    }
+
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .profile-title {
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .profile-card {
+      background: rgba(10,15,40,0.8);
+      border-radius: 18px; /* زوايا دائرية متناسقة */
+      padding: 25px;
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 20px rgba(0,217,255,0.2);
+      margin-bottom: 20px;
+    }
+
+    .profile-info {
+      margin-bottom: 15px;
+    }
+
+    .profile-info label {
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .profile-info p {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+
+    .edit-btn {
+      background: linear-gradient(135deg, #00d9ff, #00bcd4);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 12px; /* زوايا دائرية متناسقة */
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0,217,255,0.3);
+      margin-top: 10px;
+    }
+
+    .edit-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 25px rgba(0,255,255,0.5);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* تحسينات إضافية */
+    .phone-display {
+      direction: ltr;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 8px 0;
+      padding: 6px 12px;
+      background: rgba(0, 188, 212, 0.1);
+      border-radius: 8px; /* زوايا دائرية متناسقة */
+      border: 1px solid var(--accent);
+    }
+
+    .booking-status {
+      color: #22d97a;
+      font-weight: 700;
+      margin: 10px 0;
+      padding: 8px;
+      background: rgba(34, 217, 122, 0.1);
+      border-radius: 8px; /* زوايا دائرية متناسقة */
+      border: 1px solid #22d97a;
+    }
+
+    /* شاشة الحجوزات */
+    .bookings-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+      padding-bottom: 80px; /* مساحة للدوك */
+    }
+
+    .bookings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .bookings-title {
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+
+    .booking-item {
+      background: rgba(10,15,40,0.8);
+      border-radius: 16px; /* زوايا دائرية متناسقة */
+      padding: 20px;
+      border: 1.5px solid var(--primary);
+      margin-bottom: 15px;
+      box-shadow: 0 0 15px rgba(0,217,255,0.2);
+      position: relative;
+    }
+
+    .no-bookings {
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 50px;
+      font-size: 1.1rem;
+    }
+
+    /* زر الموافقة على التعديلات */
+    .confirm-btn {
+      background: linear-gradient(135deg, #22d97a, #00bcd4);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1.2rem;
+      border-radius: 50%; /* دائري بالكامل */
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto;
+      box-shadow: 0 0 20px rgba(34,217,122,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .confirm-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(34,217,122,0.6);
+    }
+
+    /* زر الإعدادات في الملف الشخصي */
+    .settings-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #00d9ff, #00bcd4);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 1.5rem;
+      border-radius: 50%; /* دائري بالكامل */
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(0,217,255,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .settings-btn:hover {
+      transform: translateX(-50%) scale(1.1);
+      box-shadow: 0 0 35px rgba(0,255,255,0.7);
+    }
+
+    /* رسالة الحجز النشط في شاشة الحجوزات */
+    .active-booking-banner {
+      background: rgba(0,217,255,0.1);
+      border: 1px solid var(--primary);
+      border-radius: 12px; /* زوايا دائرية متناسقة */
+      padding: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* تحسينات للشاشات المختلفة */
+    .screen {
+      display: none;
+      width: 100%;
+      min-height: calc(100vh - 80px);
+      padding: 20px;
+      padding-bottom: 0;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    /* نافذة تأكيد الإلغاء */
+    .confirmation-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .confirmation-content {
+      background: rgba(10,15,40,0.95);
+      padding: 25px;
+      border-radius: 18px;
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 30px rgba(0,217,255,0.4);
+      text-align: center;
+      max-width: 350px;
+      width: 90%;
+    }
+
+    .confirmation-text {
+      color: var(--text);
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+
+    .confirmation-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .confirm-yes, .confirm-no {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .confirm-yes {
+      background: linear-gradient(135deg, #22d97a, #00bcd4);
+      color: white;
+    }
+
+    .confirm-no {
+      background: #ff1744;
+      color: white;
+    }
+
+    .confirm-yes:hover, .confirm-no:hover {
+      transform: scale(1.05);
+    }
+
+    /* زر إلغاء الحجز في عنصر الحجز */
+    .booking-cancel-btn {
+      background: #ff1744;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .booking-cancel-btn:hover {
+      background: #d50032;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>صالون التميز</h1>
-    <p class="subtitle">تجربة فاخرة بلمسة تقنية</p>
+  <!-- شاشة تسجيل الدخول -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-container">
+      <h1 class="login-title">تسجيل دخول</h1>
+      <form id="loginForm">
+        <label for="userName">الاسم الكامل</label>
+        <input type="text" id="userName" required placeholder="أدخل اسمك الكامل (أحرف عربية فقط - من 7 إلى 50 حرف)">
+        <div class="char-counter" id="userNameCounter">0/50</div>
+        <div class="error-message" id="userNameError">الاسم يجب أن يحتوي على أحرف عربية فقط وبين 7 و50 حرف</div>
+        
+        <label for="userPhone">رقم الهاتف</label>
+        <input type="tel" id="userPhone" required placeholder="أدخل رقم هاتفك (11 رقم فقط)">
+        <div class="char-counter" id="userPhoneCounter">0/11</div>
+        <div class="error-message" id="userPhoneError">رقم الهاتف يجب أن يحتوي على 11 رقم فقط</div>
+        
+        <button type="submit" class="login-btn" id="loginBtn">موافق</button>
+      </form>
+    </div>
+  </div>
 
-    <div id="bookingInfo" class="booking-info"></div>
-    <div id="detailsCard" class="details-card"></div>
+  <!-- شاشة الحجز الرئيسية -->
+  <div id="mainScreen" class="screen active">
+    <div class="container">
+      <h1>صالون التميز</h1>
+      <p class="subtitle">تجربة فاخرة بلمسة تقنية</p>
 
-    <form id="bookingForm">
-      <label for="name">الاسم الكامل</label>
-      <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
+      <!-- تم إخفاء bookingInfo و detailsCard من الصفحة الرئيسية -->
+      <div id="detailsCard" class="details-card"></div>
 
-      <label for="service">نوع الخدمة</label>
-      <select id="service" required>
-        <option value="">اختر الخدمة</option>
-        <option value="قص شعر VIP">قص شعر VIP</option>
-        <option value="حلاقة ذقن ملكية">حلاقة ذقن ملكية</option>
-        <option value="صبغة فاخرة">صبغة فاخرة</option>
-        <option value="عناية بالبشرة">عناية بالبشرة</option>
-      </select>
+      <form id="bookingForm">
+        <label for="name">الاسم الكامل</label>
+        <input type="text" id="name" required placeholder="أدخل اسمك الكامل (أحرف عربية فقط - من 7 إلى 50 حرف)">
+        <div class="char-counter" id="nameCounter">0/50</div>
+        <div class="error-message" id="nameError">الاسم يجب أن يحتوي على أحرف عربية فقط وبين 7 و50 حرف</div>
 
-      <label for="day">اختر اليوم</label>
-      <select id="day" required></select>
+        <label for="service">نوع الخدمة</label>
+        <select id="service" required>
+          <option value="">اختر الخدمة</option>
+          <option value="قص شعر VIP">قص شعر VIP</option>
+          <option value="حلاقة ذقن ملكية">حلاقة ذقن ملكية</option>
+          <option value="صبغة فاخرة">صبغة فاخرة</option>
+          <option value="عناية بالبشرة">عناية بالبشرة</option>
+        </select>
 
-      <label for="hour">اختر الساعة</label>
-      <select id="hour" required></select>
+        <label for="day">اختر اليوم</label>
+        <select id="day" required></select>
 
-      <button type="submit">احجز الآن</button>
-    </form>
+        <label for="hour">اختر الساعة</label>
+        <select id="hour" required></select>
+
+        <button type="submit" id="submitBtn">احجز الآن</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- شاشة الملف الشخصي -->
+  <div id="profileScreen" class="screen">
+    <div class="container">
+      <div class="profile-header">
+        <h2 class="profile-title">الملف الشخصي</h2>
+      </div>
+      
+      <div class="profile-card">
+        <div class="profile-info">
+          <label>الاسم الكامل</label>
+          <p id="profileName"></p>
+          
+          <label>رقم الهاتف</label>
+          <p id="profilePhone" class="phone-display"></p>
+        </div>
+        
+        <div id="editProfileForm" class="hidden">
+          <h3 style="color: var(--accent); margin-bottom: 20px;">تعديل البيانات</h3>
+          <form id="updateProfileForm">
+            <label for="editName">الاسم الكامل</label>
+            <input type="text" id="editName" required placeholder="أدخل اسمك الكامل (أحرف عربية فقط - من 7 إلى 50 حرف)">
+            <div class="char-counter" id="editNameCounter">0/50</div>
+            <div class="error-message" id="editNameError">الاسم يجب أن يحتوي على أحرف عربية فقط وبين 7 و50 حرف</div>
+            
+            <label for="editPhone">رقم الهاتف</label>
+            <input type="tel" id="editPhone" required placeholder="أدخل رقم هاتفك (11 رقم فقط)">
+            <div class="char-counter" id="editPhoneCounter">0/11</div>
+            <div class="error-message" id="editPhoneError">رقم الهاتف يجب أن يحتوي على 11 رقم فقط</div>
+            
+            <button type="button" class="confirm-btn" id="confirmEdit">✓</button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- زر الإعدادات في شاشة الملف الشخصي -->
+      <button class="settings-btn" id="settingsBtn">⚙️</button>
+    </div>
+  </div>
+
+  <!-- شاشة الحجوزات -->
+  <div id="bookingsScreen" class="screen">
+    <div class="container">
+      <div class="bookings-header">
+        <h2 class="bookings-title">حجوزاتي</h2>
+      </div>
+      
+      <!-- رسالة الحجز النشط (تظهر فقط في شاشة الحجوزات) -->
+      <div id="activeBookingBanner" class="active-booking-banner hidden">
+        لديك حجز نشط - اضغط لعرض التفاصيل
+      </div>
+      
+      <div id="bookingsList">
+        <!-- سيتم تعبئة الحجوزات هنا -->
+      </div>
+      
+      <div id="noBookingsMessage" class="no-bookings hidden">
+        <p>لا توجد حجوزات حالياً</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 شريط التنقل السفلي -->
+  <!-- 🔹 شريط التنقل السفلي -->
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-item active" id="navHome">
+    <!-- 🏠 أيقونة الرئيسية -->
+    <img src="home-button.png" alt="الرئيسية" class="nav-icon">
+    <span class="nav-label">الرئيسية</span>
+  </div>
+
+  <div class="nav-item" id="navBookings">
+    <!-- 📔 أيقونة الحجوزات -->
+    <img src="order-history.png" alt="الحجوزات" class="nav-icon">
+    <span class="nav-label">الحجوزات</span>
+  </div>
+
+  <div class="nav-item" id="navProfile">
+    <!-- 👤 أيقونة الملف الشخصي -->
+    <img src="profile.png" alt="الملف الشخصي" class="nav-icon">
+    <span class="nav-label">الملف</span>
+  </div>
+</div>
+
+
+  <!-- نافذة تأكيد الإلغاء -->
+  <div id="confirmationModal" class="confirmation-modal">
+    <div class="confirmation-content">
+      <h3 style="color: var(--primary); margin-bottom: 15px;">تأكيد الإلغاء</h3>
+      <p class="confirmation-text">هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟</p>
+      <div class="confirmation-buttons">
+        <button class="confirm-yes" id="confirmYes">✓ نعم</button>
+        <button class="confirm-no" id="confirmNo">✗ لا</button>
+      </div>
+    </div>
   </div>
 
   <div id="successToast" class="success-toast"></div>
 
-  <!-- Firebase Script نفس كودك بدون تغيير -->
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
     import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyALYto6lJvO0qrne3mL1zz2jBdlgnA4-nA",
       authDomain: "salonbookingsystem-d2296.firebaseapp.com",
@@ -268,22 +819,516 @@
       messagingSenderId: "51763851442",
       appId: "1:51763851442:web:3ebd2e1c6d84a24ac119ab"
     };
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+
+    // عناصر DOM
+    const loginScreen = document.getElementById("loginScreen");
+    const mainScreen = document.getElementById("mainScreen");
+    const profileScreen = document.getElementById("profileScreen");
+    const bookingsScreen = document.getElementById("bookingsScreen");
+    const bottomNav = document.getElementById("bottomNav");
+    const navHome = document.getElementById("navHome");
+    const navProfile = document.getElementById("navProfile");
+    const navBookings = document.getElementById("navBookings");
+    const confirmEdit = document.getElementById("confirmEdit");
+    const updateProfileForm = document.getElementById("updateProfileForm");
+    const editProfileForm = document.getElementById("editProfileForm");
+    const profileName = document.getElementById("profileName");
+    const profilePhone = document.getElementById("profilePhone");
+    const editName = document.getElementById("editName");
+    const editPhone = document.getElementById("editPhone");
+    const loginForm = document.getElementById("loginForm");
+    const userName = document.getElementById("userName");
+    const userPhone = document.getElementById("userPhone");
+    const bookingsList = document.getElementById("bookingsList");
+    const noBookingsMessage = document.getElementById("noBookingsMessage");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const activeBookingBanner = document.getElementById("activeBookingBanner");
+    const loginBtn = document.getElementById("loginBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const confirmationModal = document.getElementById("confirmationModal");
+    const confirmYes = document.getElementById("confirmYes");
+    const confirmNo = document.getElementById("confirmNo");
+    
+    // عدادات الأحرف
+    const userNameCounter = document.getElementById("userNameCounter");
+    const userPhoneCounter = document.getElementById("userPhoneCounter");
+    const nameCounter = document.getElementById("nameCounter");
+    const editNameCounter = document.getElementById("editNameCounter");
+    const editPhoneCounter = document.getElementById("editPhoneCounter");
+    
+    // رسائل الخطأ
+    const userNameError = document.getElementById("userNameError");
+    const userPhoneError = document.getElementById("userPhoneError");
+    const nameError = document.getElementById("nameError");
+    const editNameError = document.getElementById("editNameError");
+    const editPhoneError = document.getElementById("editPhoneError");
+    
+    // العناصر الأصلية من النظام
     const days = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
     const daysSelect = document.getElementById("day");
     const hoursSelect = document.getElementById("hour");
     const toast = document.getElementById("successToast");
-    const info = document.getElementById("bookingInfo");
     const details = document.getElementById("detailsCard");
     const form = document.getElementById("bookingForm");
+    const nameInput = document.getElementById("name");
 
+    // بيانات المستخدم
+    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+    let myBooking = JSON.parse(localStorage.getItem("myBooking")) || null;
+    let bookingToCancel = null; // لتخزين الحجز المراد إلغاؤه
+
+    // التحقق من وجود مستخدم مسجل
+    if (currentUser) {
+      showMainScreen();
+    } else {
+      // إخفاء الدوك حتى يتم تسجيل الدخول
+      bottomNav.style.display = "none";
+    }
+
+    // ========== وظائف التحقق من صحة الإدخال ==========
+    
+    /**
+     * التحقق من صحة الاسم (أحرف عربية فقط)
+     * @param {string} name - الاسم المراد التحقق منه
+     * @returns {boolean} - صحيح إذا كان الاسم يحتوي على أحرف عربية فقط
+     */
+    function isValidName(name) {
+      // النمط يتحقق من وجود أحرف عربية فقط (بما في ذلك الهمزات والتشكيل)
+      const arabicPattern = /^[\u0600-\u06FF\s]+$/;
+      return arabicPattern.test(name);
+    }
+
+    /**
+     * التحقق من طول الاسم (بين 7 و50 حرف)
+     * @param {string} name - الاسم المراد التحقق منه
+     * @returns {boolean} - صحيح إذا كان الاسم بين 7 و50 حرف
+     */
+    function isValidNameLength(name) {
+      return name.length >= 7 && name.length <= 50;
+    }
+
+    /**
+     * التحقق من صحة رقم الهاتف (أرقام فقط)
+     * @param {string} phone - رقم الهاتف المراد التحقق منه
+     * @returns {boolean} - صحيح إذا كان رقم الهاتف يحتوي على أرقام فقط
+     */
+    function isValidPhone(phone) {
+      // النمط يتحقق من وجود أرقام فقط
+      const phonePattern = /^[0-9]+$/;
+      return phonePattern.test(phone);
+    }
+
+    /**
+     * التحقق من طول رقم الهاتف (11 رقم بالضبط)
+     * @param {string} phone - رقم الهاتف المراد التحقق منه
+     * @returns {boolean} - صحيح إذا كان رقم الهاتف 11 رقم
+     */
+    function isValidPhoneLength(phone) {
+      return phone.length === 11;
+    }
+
+    /**
+     * التحقق من صحة نموذج الحجز
+     * @returns {boolean} - صحيح إذا كان النموذج صالحاً
+     */
+    function validateBookingForm() {
+      const name = nameInput.value.trim();
+      const service = document.getElementById("service").value;
+      const day = daysSelect.value;
+      const hour = hoursSelect.value;
+      
+      let isValid = true;
+      
+      // التحقق من الاسم
+      if (!isValidName(name) || !isValidNameLength(name)) {
+        nameInput.classList.add("invalid");
+        nameError.style.display = "block";
+        isValid = false;
+      } else {
+        nameInput.classList.remove("invalid");
+        nameInput.classList.add("valid");
+        nameError.style.display = "none";
+      }
+      
+      // التحقق من الخدمة
+      if (!service) {
+        document.getElementById("service").classList.add("invalid");
+        isValid = false;
+      } else {
+        document.getElementById("service").classList.remove("invalid");
+        document.getElementById("service").classList.add("valid");
+      }
+      
+      // التحقق من اليوم
+      if (!day) {
+        daysSelect.classList.add("invalid");
+        isValid = false;
+      } else {
+        daysSelect.classList.remove("invalid");
+        daysSelect.classList.add("valid");
+      }
+      
+      // التحقق من الساعة
+      if (!hour) {
+        hoursSelect.classList.add("invalid");
+        isValid = false;
+      } else {
+        hoursSelect.classList.remove("invalid");
+        hoursSelect.classList.add("valid");
+      }
+      
+      return isValid;
+    }
+
+    /**
+     * التحقق من صحة نموذج تسجيل الدخول
+     * @returns {boolean} - صحيح إذا كان النموذج صالحاً
+     */
+    function validateLoginForm() {
+      const name = userName.value.trim();
+      const phone = userPhone.value.trim();
+      
+      let isValid = true;
+      
+      // التحقق من الاسم
+      if (!isValidName(name) || !isValidNameLength(name)) {
+        userName.classList.add("invalid");
+        userNameError.style.display = "block";
+        isValid = false;
+      } else {
+        userName.classList.remove("invalid");
+        userName.classList.add("valid");
+        userNameError.style.display = "none";
+      }
+      
+      // التحقق من رقم الهاتف
+      if (!isValidPhone(phone) || !isValidPhoneLength(phone)) {
+        userPhone.classList.add("invalid");
+        userPhoneError.style.display = "block";
+        isValid = false;
+      } else {
+        userPhone.classList.remove("invalid");
+        userPhone.classList.add("valid");
+        userPhoneError.style.display = "none";
+      }
+      
+      return isValid;
+    }
+
+    /**
+     * التحقق من صحة نموذج تعديل الملف الشخصي
+     * @returns {boolean} - صحيح إذا كان النموذج صالحاً
+     */
+    function validateEditProfileForm() {
+      const name = editName.value.trim();
+      const phone = editPhone.value.trim();
+      
+      let isValid = true;
+      
+      // التحقق من الاسم
+      if (!isValidName(name) || !isValidNameLength(name)) {
+        editName.classList.add("invalid");
+        editNameError.style.display = "block";
+        isValid = false;
+      } else {
+        editName.classList.remove("invalid");
+        editName.classList.add("valid");
+        editNameError.style.display = "none";
+      }
+      
+      // التحقق من رقم الهاتف
+      if (!isValidPhone(phone) || !isValidPhoneLength(phone)) {
+        editPhone.classList.add("invalid");
+        editPhoneError.style.display = "block";
+        isValid = false;
+      } else {
+        editPhone.classList.remove("invalid");
+        editPhone.classList.add("valid");
+        editPhoneError.style.display = "none";
+      }
+      
+      return isValid;
+    }
+
+    // ========== وظائف منع الإدخال غير المرغوب ==========
+    
+    /**
+     * منع إدخال الأرقام في حقل الاسم
+     * @param {Event} e - حدث الإدخال
+     */
+    function preventNumbersInName(e) {
+      // منع إدخال الأرقام والرموز الخاصة
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        return;
+      }
+      
+      // منع الرموز الخاصة باستثناء المسافة
+      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', ' '];
+      if (!allowedKeys.includes(e.key) && !/^[\u0600-\u06FF]$/.test(e.key)) {
+        e.preventDefault();
+      }
+    }
+    
+    /**
+     * منع إدخال الحروف في حقل الهاتف
+     * @param {Event} e - حدث الإدخال
+     */
+    function preventLettersInPhone(e) {
+      // السماح فقط بالأرقام ومفاتيح التحكم
+      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+      if (!allowedKeys.includes(e.key) && !(e.key >= '0' && e.key <= '9')) {
+        e.preventDefault();
+      }
+    }
+    
+    /**
+     * تحديث عداد الأحرف
+     * @param {HTMLInputElement} input - حقل الإدخال
+     * @param {HTMLElement} counter - عنصر العداد
+     * @param {number} maxLength - الحد الأقصى للأحرف
+     */
+    function updateCharCounter(input, counter, maxLength) {
+      const length = input.value.length;
+      counter.textContent = `${length}/${maxLength}`;
+      
+      // تغيير لون العداد بناءً على الطول
+      if (length > maxLength) {
+        counter.style.color = 'var(--error)';
+      } else if (length >= 7 && maxLength === 50) {
+        counter.style.color = 'var(--accent)';
+      } else if (length === 11 && maxLength === 11) {
+        counter.style.color = 'var(--accent)';
+      } else {
+        counter.style.color = 'var(--accent)';
+      }
+    }
+
+    // ========== إضافة مستمعي الأحداث للتحقق الفوري ==========
+    
+    // التحقق الفوري أثناء الكتابة في نموذج تسجيل الدخول
+    userName.addEventListener("input", () => {
+      const name = userName.value.trim();
+      updateCharCounter(userName, userNameCounter, 50);
+      
+      if (name && (!isValidName(name) || !isValidNameLength(name))) {
+        userName.classList.add("invalid");
+        userNameError.style.display = "block";
+      } else {
+        userName.classList.remove("invalid");
+        userName.classList.add("valid");
+        userNameError.style.display = "none";
+      }
+    });
+
+    // منع إدخال الأرقام في اسم المستخدم
+    userName.addEventListener("keydown", preventNumbersInName);
+
+    userPhone.addEventListener("input", () => {
+      const phone = userPhone.value.trim();
+      updateCharCounter(userPhone, userPhoneCounter, 11);
+      
+      if (phone && (!isValidPhone(phone) || !isValidPhoneLength(phone))) {
+        userPhone.classList.add("invalid");
+        userPhoneError.style.display = "block";
+      } else {
+        userPhone.classList.remove("invalid");
+        userPhone.classList.add("valid");
+        userPhoneError.style.display = "none";
+      }
+    });
+
+    // منع إدخال الحروف في رقم الهاتف
+    userPhone.addEventListener("keydown", preventLettersInPhone);
+
+    // التحقق الفوري أثناء الكتابة في نموذج الحجز
+    nameInput.addEventListener("input", () => {
+      const name = nameInput.value.trim();
+      updateCharCounter(nameInput, nameCounter, 50);
+      
+      if (name && (!isValidName(name) || !isValidNameLength(name))) {
+        nameInput.classList.add("invalid");
+        nameError.style.display = "block";
+      } else {
+        nameInput.classList.remove("invalid");
+        nameInput.classList.add("valid");
+        nameError.style.display = "none";
+      }
+    });
+
+    // منع إدخال الأرقام في اسم الحجز
+    nameInput.addEventListener("keydown", preventNumbersInName);
+
+    // التحقق الفوري أثناء الكتابة في نموذج تعديل الملف الشخصي
+    editName.addEventListener("input", () => {
+      const name = editName.value.trim();
+      updateCharCounter(editName, editNameCounter, 50);
+      
+      if (name && (!isValidName(name) || !isValidNameLength(name))) {
+        editName.classList.add("invalid");
+        editNameError.style.display = "block";
+      } else {
+        editName.classList.remove("invalid");
+        editName.classList.add("valid");
+        editNameError.style.display = "none";
+      }
+    });
+
+    // منع إدخال الأرقام في اسم التعديل
+    editName.addEventListener("keydown", preventNumbersInName);
+
+    editPhone.addEventListener("input", () => {
+      const phone = editPhone.value.trim();
+      updateCharCounter(editPhone, editPhoneCounter, 11);
+      
+      if (phone && (!isValidPhone(phone) || !isValidPhoneLength(phone))) {
+        editPhone.classList.add("invalid");
+        editPhoneError.style.display = "block";
+      } else {
+        editPhone.classList.remove("invalid");
+        editPhone.classList.add("valid");
+        editPhoneError.style.display = "none";
+      }
+    });
+
+    // منع إدخال الحروف في رقم الهاتف للتعديل
+    editPhone.addEventListener("keydown", preventLettersInPhone);
+
+    // ========== وظائف عامة ==========
+    
     function showToast(msg) {
       toast.textContent = msg;
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
+    function showMainScreen() {
+      loginScreen.classList.add("hidden");
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      mainScreen.classList.add('active');
+      updateNavActive('navHome');
+      nameInput.value = currentUser.name;
+      populateDays();
+      populateHours();
+      
+      // إخفاء رسالة الحجز النشط من الشاشة الرئيسية - حسب طلب المستخدم
+      // لا تظهر أي رسائل في الصفحة الرئيسية
+    }
+
+    function showProfileScreen() {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      profileScreen.classList.add('active');
+      updateNavActive('navProfile');
+      profileName.textContent = currentUser.name;
+      profilePhone.textContent = currentUser.phone;
+      editProfileForm.classList.add("hidden");
+    }
+
+    function showBookingsScreen() {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+      bookingsScreen.classList.add('active');
+      updateNavActive('navBookings');
+      loadUserBookings();
+      
+      // عرض رسالة الحجز النشط في شاشة الحجوزات فقط
+      if (myBooking) {
+        activeBookingBanner.classList.remove("hidden");
+        activeBookingBanner.onclick = () => showDetails(myBooking);
+      } else {
+        activeBookingBanner.classList.add("hidden");
+      }
+    }
+
+    function updateNavActive(activeId) {
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.getElementById(activeId).classList.add('active');
+    }
+
+    // ========== تسجيل الدخول ==========
+    
+    loginForm.addEventListener("submit", e => {
+      e.preventDefault();
+      
+      // التحقق من صحة النموذج
+      if (!validateLoginForm()) {
+        showToast("يرجى تصحيح الأخطاء في النموذج");
+        return;
+      }
+      
+      const name = userName.value.trim();
+      const phone = userPhone.value.trim();
+      
+      if (!name || !phone) return;
+      
+      // حفظ بيانات المستخدم
+      currentUser = { name, phone, userId: Date.now().toString() };
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      
+      showToast(`مرحباً ${name}!`);
+      showMainScreen();
+      
+      // إظهار الدوك بعد تسجيل الدخول
+      bottomNav.style.display = "flex";
+    });
+
+    // ========== التنقل بين الشاشات ==========
+    
+    navHome.addEventListener("click", showMainScreen);
+    navProfile.addEventListener("click", showProfileScreen);
+    navBookings.addEventListener("click", showBookingsScreen);
+
+    // ========== تعديل الملف الشخصي ==========
+    
+    settingsBtn.addEventListener("click", () => {
+      editName.value = currentUser.name;
+      editPhone.value = currentUser.phone;
+      updateCharCounter(editName, editNameCounter, 50);
+      updateCharCounter(editPhone, editPhoneCounter, 11);
+      editProfileForm.classList.remove("hidden");
+    });
+
+    confirmEdit.addEventListener("click", () => {
+      // التحقق من صحة النموذج
+      if (!validateEditProfileForm()) {
+        showToast("يرجى تصحيح الأخطاء في النموذج");
+        return;
+      }
+      
+      const newName = editName.value.trim();
+      const newPhone = editPhone.value.trim();
+      
+      if (!newName || !newPhone) return;
+      
+      // تحديث بيانات المستخدم
+      currentUser.name = newName;
+      currentUser.phone = newPhone;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      
+      // تحديث الحقول في واجهة الحجز
+      nameInput.value = newName;
+      updateCharCounter(nameInput, nameCounter, 50);
+      
+      // تحديث عرض الملف الشخصي
+      profileName.textContent = newName;
+      profilePhone.textContent = newPhone;
+      
+      editProfileForm.classList.add("hidden");
+      showToast("تم تحديث بياناتك بنجاح");
+    });
+
+    // ========== وظائف الحجز ==========
+    
     function populateDays() {
       daysSelect.innerHTML = "<option value=''>اختر اليوم</option>";
       const today = new Date();
@@ -310,7 +1355,6 @@
 
     const bookingsRef = ref(db, "bookings");
     let currentBookings = {};
-    let myBooking = JSON.parse(localStorage.getItem("myBooking")) || null;
 
     onValue(bookingsRef, snap => {
       currentBookings = snap.val() || {};
@@ -319,16 +1363,19 @@
         showToast("تم إلغاء حجزك بواسطة الصالون");
         localStorage.removeItem("myBooking");
         myBooking = null;
-        info.style.display = "none";
+        // إخفاء التفاصيل في الصفحة الرئيسية - حسب طلب المستخدم
         details.style.display = "none";
+        activeBookingBanner.classList.add("hidden");
       }
     });
 
     function updateHours() {
       const selectedDay = daysSelect.value;
       if (!selectedDay) return;
+
       const now = new Date();
       const todayISO = now.toISOString().slice(0, 10);
+
       hoursSelect.querySelectorAll("option").forEach(opt => {
         if (!opt.value) return;
         const key = `${selectedDay}_${opt.value}`;
@@ -340,60 +1387,177 @@
     }
 
     daysSelect.addEventListener("change", updateHours);
-    if (myBooking) showInfo(myBooking);
 
     form.addEventListener("submit", async e => {
       e.preventDefault();
+
+      // التحقق من صحة النموذج
+      if (!validateBookingForm()) {
+        showToast("يرجى تصحيح الأخطاء في النموذج");
+        return;
+      }
+
       const name = document.getElementById("name").value.trim();
       const service = document.getElementById("service").value;
       const day = daysSelect.value;
       const hour = hoursSelect.value;
+
       if (!name || !service || !day || !hour) return;
       const slotKey = `${day}_${hour}`;
+
       if (currentBookings[slotKey]) return alert("عذرًا، هذا الموعد محجوز.");
+
       const bookingId = Date.now().toString();
-      await set(ref(db, `bookings/${slotKey}/${bookingId}`), { name, service, timestamp: new Date().toISOString() });
+
+      // إضافة رقم الهاتف إلى بيانات الحجز
+      await set(ref(db, `bookings/${slotKey}/${bookingId}`), {
+        name,
+        service,
+        phone: currentUser.phone,
+        timestamp: new Date().toISOString(),
+        userId: currentUser.userId
+      });
+
       myBooking = { name, service, day, hour, slotKey, bookingId };
       localStorage.setItem("myBooking", JSON.stringify(myBooking));
+
       showToast("تم الحجز بنجاح ✨");
-      showInfo(myBooking);
       form.reset();
+      nameInput.value = currentUser.name;
+      updateCharCounter(nameInput, nameCounter, 50);
       populateDays();
       populateHours();
     });
-
-    function showInfo(b) {
-      info.style.display = "block";
-      info.textContent = "لديك حجز نشط - اضغط لعرض التفاصيل";
-      info.onclick = () => showDetails(b);
-    }
 
     function showDetails(b) {
       const d = new Date(b.day);
       details.innerHTML = `
         <h3>تفاصيل الحجز</h3>
         <p><b>الاسم:</b> ${b.name}</p>
+        <div class="phone-display">📞 ${currentUser.phone}</div>
         <p><b>الخدمة:</b> ${b.service}</p>
         <p><b>اليوم:</b> ${days[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})</p>
         <p><b>الساعة:</b> ${b.hour}</p>
+        <div class="booking-status">✅ موعد قادم</div>
         <button class="cancel-btn" id="cancelBtn">إلغاء الحجز</button>
       `;
       details.style.display = "block";
       document.getElementById("cancelBtn").onclick = () => cancelBooking(b);
     }
 
-    async function cancelBooking(b) {
-      await remove(ref(db, `bookings/${b.slotKey}/${b.bookingId}`));
-      localStorage.removeItem("myBooking");
-      myBooking = null;
-      showToast("تم إلغاء الحجز ❌");
-      details.style.display = "none";
-      info.style.display = "none";
-      updateHours();
+    // ========== وظائف إلغاء الحجز ==========
+    
+    /**
+     * عرض نافذة تأكيد الإلغاء
+     * @param {Object} booking - بيانات الحجز المراد إلغاؤه
+     */
+    function showCancelConfirmation(booking) {
+      bookingToCancel = booking;
+      confirmationModal.style.display = "flex";
     }
 
-    populateDays();
-    populateHours();
+    /**
+     * إخفاء نافذة تأكيد الإلغاء
+     */
+    function hideCancelConfirmation() {
+      confirmationModal.style.display = "none";
+      bookingToCancel = null;
+    }
+
+    /**
+     * تنفيذ عملية إلغاء الحجز
+     */
+    async function executeCancelBooking() {
+      if (!bookingToCancel) return;
+      
+      await remove(ref(db, `bookings/${bookingToCancel.slotKey}/${bookingToCancel.bookingId}`));
+      
+      // تحديث الحجز النشط إذا كان هو نفسه الذي تم إلغاؤه
+      if (myBooking && myBooking.bookingId === bookingToCancel.bookingId) {
+        localStorage.removeItem("myBooking");
+        myBooking = null;
+        activeBookingBanner.classList.add("hidden");
+      }
+      
+      showToast("تم إلغاء الحجز ❌");
+      hideCancelConfirmation();
+      loadUserBookings(); // إعادة تحميل قائمة الحجوزات
+      updateHours(); // تحديث الساعات المتاحة
+    }
+
+    // إضافة مستمعي الأحداث لأزرار التأكيد
+    confirmYes.addEventListener("click", executeCancelBooking);
+    confirmNo.addEventListener("click", hideCancelConfirmation);
+
+    // ========== تحميل حجوزات المستخدم ==========
+    
+    function loadUserBookings() {
+      bookingsList.innerHTML = "";
+      
+      if (!currentBookings || Object.keys(currentBookings).length === 0) {
+        noBookingsMessage.classList.remove("hidden");
+        return;
+      }
+      
+      const userBookings = [];
+      
+      for (const slotKey in currentBookings) {
+        for (const bookingId in currentBookings[slotKey]) {
+          const booking = currentBookings[slotKey][bookingId];
+          if (booking.userId === currentUser.userId) {
+            const [dayISO, time] = slotKey.split("_");
+            userBookings.push({
+              ...booking,
+              slotKey,
+              bookingId,
+              dayISO,
+              time
+            });
+          }
+        }
+      }
+      
+      if (userBookings.length === 0) {
+        noBookingsMessage.classList.remove("hidden");
+        return;
+      }
+      
+      noBookingsMessage.classList.add("hidden");
+      
+      userBookings.forEach(booking => {
+        const d = new Date(booking.dayISO);
+        const bookingItem = document.createElement("div");
+        bookingItem.className = "booking-item";
+        
+        // تحديد إذا كان هذا الحجز هو الحجز النشط
+        const isActiveBooking = myBooking && myBooking.bookingId === booking.bookingId;
+        
+        bookingItem.innerHTML = `
+          <p><b>الخدمة:</b> ${booking.service}</p>
+          <p><b>اليوم:</b> ${days[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})</p>
+          <p><b>الساعة:</b> ${booking.time}</p>
+          ${isActiveBooking ? '<div class="booking-status">✅ موعد قادم</div>' : ''}
+          <button class="booking-cancel-btn" data-booking='${JSON.stringify(booking).replace(/'/g, "&#39;")}'>إلغاء الحجز</button>
+        `;
+        
+        // إضافة مستمع الحدث لزر الإلغاء
+        const cancelBtn = bookingItem.querySelector('.booking-cancel-btn');
+        cancelBtn.addEventListener('click', function() {
+          const bookingData = JSON.parse(this.getAttribute('data-booking'));
+          showCancelConfirmation(bookingData);
+        });
+        
+        bookingsList.appendChild(bookingItem);
+      });
+    }
+
+    // ========== تهيئة أولية ==========
+    
+    if (currentUser) {
+      populateDays();
+      populateHours();
+      updateCharCounter(nameInput, nameCounter, 50);
+    }
   </script>
 </body>
 </html>
