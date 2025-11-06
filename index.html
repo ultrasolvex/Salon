@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>صالون التميز - الحجز الفاخر</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #00d9ff; /* أزرق كهربائي ....*/
-      --accent: #00bcd4;  /* أكوا */
-      --text: #8afcff;
-      --bg-dark: #050817;
-      --input-bg: #0a1024;
+      --primary: #00ffff; /* أزرق سماوي كهربائي */
+      --accent: #00ffff;  /* أزرق سماوي */
+      --text: #fff;
+      --bg-dark: #000010;
+      --input-bg: rgba(255,255,255,0.06);
       --error: #ff1744;   /* لون رسائل الخطأ */
     }
 
@@ -19,30 +19,50 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Tajawal', sans-serif;
+      font-family: 'Almarai', sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      background: linear-gradient(135deg, #000010, #03008a 60%, #000);
       color: var(--text);
       min-height: 100vh;
       padding: 15px;
       padding-bottom: 80px; /* مساحة للدوك */
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+      scroll-behavior: smooth;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,255,0.15), transparent 70%);
+      z-index: -1;
+      animation: bgMove 15s infinite linear;
+    }
+
+    @keyframes bgMove {
+      0% { transform: translate(-50%, -50%); }
+      100% { transform: translate(-25%, -25%); }
     }
 
     .container {
-      background: rgba(10,15,40,0.8);
+      background: rgba(255, 255, 255, 0.06);
       padding: 28px 22px;
-      border-radius: 22px;
-      border: 2px solid var(--primary);
+      border-radius: 20px;
+      border: 2px solid rgba(0,255,255,0.35);
       box-shadow: 
-        inset 0 0 25px rgba(0,217,255,0.25),
-        0 0 35px rgba(0,217,255,0.25);
+        inset 0 0 25px rgba(0,255,255,0.25),
+        0 0 35px rgba(0,255,255,0.25);
       max-width: 460px;
       width: 100%;
       text-align: center;
       position: relative;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px) saturate(180%);
       margin: 20px auto;
     }
 
@@ -51,11 +71,11 @@
       margin-bottom: 10px;
       font-size: 1.9rem;
       font-weight: 800;
-      text-shadow: 0 0 15px rgba(0,217,255,0.6), 0 0 30px rgba(0,217,255,0.3);
+      text-shadow: 0 0 15px rgba(0,255,255,0.6), 0 0 30px rgba(0,255,255,0.3);
     }
 
     .subtitle {
-      color: var(--text);
+      color: #ccc;
       font-size: 1rem;
       margin-bottom: 24px;
       opacity: 0.8;
@@ -85,7 +105,7 @@
     /* تحسين حالات الإدخال المختلفة - إزالة اللون الأخضر */
     input.valid {
       border-color: var(--primary);
-      box-shadow: 0 0 10px rgba(0,217,255,0.3);
+      box-shadow: 0 0 10px rgba(0,255,255,0.3);
     }
 
     input.invalid {
@@ -94,7 +114,7 @@
     }
 
     input::placeholder {
-      color: rgba(0,217,255,0.5);
+      color: rgba(0,255,255,0.5);
     }
 
     input:focus, select:focus {
@@ -125,7 +145,7 @@
     }
 
     button[type="submit"], .login-btn {
-      background: linear-gradient(135deg, #00d9ff, #00bcd4);
+      background: linear-gradient(135deg, #00ffff, #00ffff);
       color: white;
       border: none;
       padding: 15px 32px;
@@ -135,7 +155,7 @@
       cursor: pointer;
       width: 100%;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(0,217,255,0.3);
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
       margin-top: 24px;
     }
 
@@ -148,7 +168,7 @@
       opacity: 0.6;
       cursor: not-allowed;
       transform: none !important;
-      box-shadow: 0 0 10px rgba(0,217,255,0.2) !important;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2) !important;
     }
 
     .booking-info {
@@ -156,7 +176,7 @@
       padding: 12px;
       border-radius: 12px; /* زوايا دائرية متناسقة */
       font-weight: 600;
-      background: rgba(0,217,255,0.1);
+      background: rgba(0,255,255,0.1);
       border: 1px solid var(--primary);
       color: var(--primary);
       cursor: pointer;
@@ -164,13 +184,13 @@
     }
 
     .details-card {
-      background: rgba(5,10,25,.95);
+      background: rgba(255,255,255,0.06);
       border: 1.5px solid var(--primary);
       border-radius: 16px; /* زوايا دائرية متناسقة */
       padding: 22px;
       margin-top: 18px;
       display: none;
-      box-shadow: 0 0 20px rgba(0,217,255,0.2);
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
     }
 
     .details-card h3 {
@@ -200,7 +220,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.8);
-      background: linear-gradient(135deg, #00d9ff, #00bcd4);
+      background: linear-gradient(135deg, #00ffff, #00ffff);
       color: white;
       padding: 20px 28px;
       border-radius: 18px; /* زوايا دائرية متناسقة */
@@ -230,7 +250,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      background: linear-gradient(135deg, #000010, #03008a 60%, #000);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -238,24 +258,24 @@
     }
 
     .login-container {
-      background: rgba(10,15,40,0.9);
+      background: rgba(255,255,255,0.06);
       padding: 30px;
-      border-radius: 22px; /* زوايا دائرية متناسقة */
-      border: 2px solid var(--primary);
+      border-radius: 20px; /* زوايا دائرية متناسقة */
+      border: 2px solid rgba(0,255,255,0.35);
       box-shadow: 
-        inset 0 0 25px rgba(0,217,255,0.25),
-        0 0 35px rgba(0,217,255,0.25);
+        inset 0 0 25px rgba(0,255,255,0.25),
+        0 0 35px rgba(0,255,255,0.25);
       max-width: 400px;
       width: 90%;
       text-align: center;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px) saturate(180%);
     }
 
     .login-title {
       font-size: 2.5rem;
       margin-bottom: 20px;
       color: var(--primary);
-      text-shadow: 0 0 15px rgba(0,217,255,0.6);
+      text-shadow: 0 0 15px rgba(0,255,255,0.6);
       font-weight: 800;
     }
 
@@ -267,15 +287,15 @@
       transform: translateX(-50%);
       width: 92%; /* أقل قليلاً من عرض الكارد */
       max-width: 480px; /* أقل بـ 30px من الكارد (460px) */
-      background: rgba(5, 10, 25, 0.95);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(0,217,255,0.3);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(0,255,255,0.3);
       border-radius: 30px; /* زوايا دائرية متناسقة */
       display: flex;
       justify-content: space-around;
       padding: 10px 0; /* تقليل البادينج قليلاً */
       z-index: 100;
-      box-shadow: 0 -5px 30px rgba(0,0,0,0.4), 0 0 20px rgba(0,217,255,0.2);
+      box-shadow: 0 -5px 30px rgba(0,0,0,0.4), 0 0 20px rgba(0,255,255,0.2);
       margin: 0 auto;
     }
 
@@ -328,13 +348,13 @@
 
     .nav-item.active {
       color: var(--primary);
-      background: rgba(0,217,255,0.1);
+      background: rgba(0,255,255,0.1);
     }
 
     .nav-icon {
       font-size: 1.8rem;
       margin-bottom: 0;
-      filter: drop-shadow(0 0 5px rgba(0,217,255,0.3));
+      filter: drop-shadow(0 0 5px rgba(0,255,255,0.3));
     }
 
     /* شاشة الملف الشخصي */
@@ -344,7 +364,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      background: linear-gradient(135deg, #000010, #03008a 60%, #000);
       z-index: 200;
       display: none;
       flex-direction: column;
@@ -374,11 +394,11 @@
     }
 
     .profile-card {
-      background: rgba(10,15,40,0.8);
+      background: rgba(255,255,255,0.06);
       border-radius: 18px; /* زوايا دائرية متناسقة */
       padding: 25px;
-      border: 2px solid var(--primary);
-      box-shadow: 0 0 20px rgba(0,217,255,0.2);
+      border: 2px solid rgba(0,255,255,0.35);
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
       margin-bottom: 20px;
     }
 
@@ -399,7 +419,7 @@
     }
 
     .edit-btn {
-      background: linear-gradient(135deg, #00d9ff, #00bcd4);
+      background: linear-gradient(135deg, #00ffff, #00ffff);
       color: white;
       border: none;
       padding: 12px 24px;
@@ -409,7 +429,7 @@
       cursor: pointer;
       width: 100%;
       transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(0,217,255,0.3);
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
       margin-top: 10px;
     }
 
@@ -431,7 +451,7 @@
       color: var(--accent);
       margin: 8px 0;
       padding: 6px 12px;
-      background: rgba(0, 188, 212, 0.1);
+      background: rgba(0, 255, 255, 0.1);
       border-radius: 8px; /* زوايا دائرية متناسقة */
       border: 1px solid var(--accent);
     }
@@ -453,7 +473,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at top, #050817 0%, #01040f 100%);
+      background: linear-gradient(135deg, #000010, #03008a 60%, #000);
       z-index: 200;
       display: none;
       flex-direction: column;
@@ -475,25 +495,25 @@
     }
 
     .booking-item {
-      background: rgba(10,15,40,0.8);
+      background: rgba(255,255,255,0.06);
       border-radius: 16px; /* زوايا دائرية متناسقة */
       padding: 20px;
       border: 1.5px solid var(--primary);
       margin-bottom: 15px;
-      box-shadow: 0 0 15px rgba(0,217,255,0.2);
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
       position: relative;
     }
 
     .no-bookings {
       text-align: center;
-      color: var(--text-muted);
+      color: #ccc;
       margin-top: 50px;
       font-size: 1.1rem;
     }
 
     /* زر الموافقة على التعديلات */
     .confirm-btn {
-      background: linear-gradient(135deg, #22d97a, #00bcd4);
+      background: linear-gradient(135deg, #22d97a, #00ffff);
       color: white;
       border: none;
       padding: 12px;
@@ -521,7 +541,7 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, #00d9ff, #00bcd4);
+      background: linear-gradient(135deg, #00ffff, #00ffff);
       color: white;
       border: none;
       padding: 15px;
@@ -533,7 +553,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 25px rgba(0,217,255,0.5);
+      box-shadow: 0 0 25px rgba(0,255,255,0.5);
       transition: all 0.3s ease;
     }
 
@@ -544,7 +564,7 @@
 
     /* رسالة الحجز النشط في شاشة الحجوزات */
     .active-booking-banner {
-      background: rgba(0,217,255,0.1);
+      background: rgba(0,255,255,0.1);
       border: 1px solid var(--primary);
       border-radius: 12px; /* زوايا دائرية متناسقة */
       padding: 15px;
@@ -586,11 +606,11 @@
     }
 
     .confirmation-content {
-      background: rgba(10,15,40,0.95);
+      background: rgba(255,255,255,0.06);
       padding: 25px;
       border-radius: 18px;
-      border: 2px solid var(--primary);
-      box-shadow: 0 0 30px rgba(0,217,255,0.4);
+      border: 2px solid rgba(0,255,255,0.35);
+      box-shadow: 0 0 30px rgba(0,255,255,0.4);
       text-align: center;
       max-width: 350px;
       width: 90%;
@@ -619,7 +639,7 @@
     }
 
     .confirm-yes {
-      background: linear-gradient(135deg, #22d97a, #00bcd4);
+      background: linear-gradient(135deg, #22d97a, #00ffff);
       color: white;
     }
 
@@ -1561,4 +1581,3 @@
   </script>
 </body>
 </html>
-
