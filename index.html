@@ -792,27 +792,25 @@
   </div>
 
   <!-- 🔹 شريط التنقل السفلي -->
-  <!-- 🔹 شريط التنقل السفلي -->
-<div class="bottom-nav" id="bottomNav">
-  <div class="nav-item active" id="navHome">
-    <!-- 🏠 أيقونة الرئيسية -->
-    <img src="home-button.png" alt="الرئيسية" class="nav-icon">
-    <span class="nav-label">الرئيسية</span>
-  </div>
+  <div class="bottom-nav" id="bottomNav">
+    <div class="nav-item active" id="navHome">
+      <!-- 🏠 أيقونة الرئيسية -->
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">الرئيسية</span>
+    </div>
 
-  <div class="nav-item" id="navBookings">
-    <!-- 📔 أيقونة الحجوزات -->
-    <img src="order-history.png" alt="الحجوزات" class="nav-icon">
-    <span class="nav-label">الحجوزات</span>
-  </div>
+    <div class="nav-item" id="navBookings">
+      <!-- 📔 أيقونة الحجوزات -->
+      <span class="nav-icon">📔</span>
+      <span class="nav-label">الحجوزات</span>
+    </div>
 
-  <div class="nav-item" id="navProfile">
-    <!-- 👤 أيقونة الملف الشخصي -->
-    <img src="profile.png" alt="الملف الشخصي" class="nav-icon">
-    <span class="nav-label">الملف</span>
+    <div class="nav-item" id="navProfile">
+      <!-- 👤 أيقونة الملف الشخصي -->
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">الملف</span>
+    </div>
   </div>
-</div>
-
 
   <!-- نافذة تأكيد الإلغاء -->
   <div id="confirmationModal" class="confirmation-modal">
@@ -902,6 +900,12 @@
     let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
     let myBooking = JSON.parse(localStorage.getItem("myBooking")) || null;
     let bookingToCancel = null; // لتخزين الحجز المراد إلغاؤه
+
+    // إعدادات الخوارزمية الجديدة
+    const CHAIRS_COUNT = 2; // عدد الكراسي
+    const SERVICE_DURATION = 20; // مدة الخدمة بالدقائق
+    const WORK_START_HOUR = 10; // بداية العمل الساعة 10 صباحاً
+    const WORK_END_HOUR = 12; // نهاية العمل الساعة 12 مساءً
 
     // التحقق من وجود مستخدم مسجل
     if (currentUser) {
@@ -1366,13 +1370,41 @@
       }
     }
 
+    /**
+     * توليد الساعات المتاحة بناءً على الخوارزمية الجديدة
+     */
     function populateHours() {
       hoursSelect.innerHTML = "<option value=''>اختر الساعة</option>";
-      for (let h = 9; h <= 21; h++) {
-        const opt = document.createElement("option");
-        opt.value = `${h}:00`;
-        opt.textContent = `${h}:00`;
-        hoursSelect.appendChild(opt);
+      const selectedDay = daysSelect.value;
+      
+      if (!selectedDay) return;
+      
+      const now = new Date();
+      const todayISO = now.toISOString().slice(0, 10);
+      const isToday = (selectedDay === todayISO);
+      
+      // توليد جميع الفترات الزمنية المتاحة من 10 صباحاً إلى 12 مساءً
+      for (let hour = WORK_START_HOUR; hour < WORK_END_HOUR; hour++) {
+        for (let minute = 0; minute < 60; minute += SERVICE_DURATION) {
+          const timeString = `${hour}:${minute === 0 ? '00' : minute}`;
+          const opt = document.createElement("option");
+          opt.value = timeString;
+          opt.textContent = timeString;
+          
+          // التحقق إذا كان الوقت في الماضي (لليوم الحالي فقط)
+          if (isToday) {
+            const [currentHour, currentMinute] = [now.getHours(), now.getMinutes()];
+            const slotTimeInMinutes = hour * 60 + minute;
+            const currentTimeInMinutes = currentHour * 60 + currentMinute;
+            
+            if (slotTimeInMinutes <= currentTimeInMinutes) {
+              opt.disabled = true;
+              opt.style.opacity = "0.4";
+            }
+          }
+          
+          hoursSelect.appendChild(opt);
+        }
       }
     }
 
@@ -1392,24 +1424,45 @@
       }
     });
 
+    /**
+     * تحديث الساعات المتاحة بناءً على الحجوزات الحالية
+     */
     function updateHours() {
       const selectedDay = daysSelect.value;
       if (!selectedDay) return;
 
       const now = new Date();
       const todayISO = now.toISOString().slice(0, 10);
+      const isToday = (selectedDay === todayISO);
 
       hoursSelect.querySelectorAll("option").forEach(opt => {
         if (!opt.value) return;
-        const key = `${selectedDay}_${opt.value}`;
-        const [hour] = opt.value.split(":");
-        const isPast = (selectedDay === todayISO && parseInt(hour) <= now.getHours());
-        opt.disabled = currentBookings[key] || isPast;
-        opt.style.opacity = opt.disabled ? ".4" : "1";
+        
+        const [hour, minute] = opt.value.split(":").map(Number);
+        const slotKey = `${selectedDay}_${opt.value}`;
+        
+        // حساب عدد الحجوزات الحالية لهذا الفاصل الزمني
+        const bookingsCount = currentBookings[slotKey] ? Object.keys(currentBookings[slotKey]).length : 0;
+        
+        // التحقق إذا كان الوقت في الماضي (لليوم الحالي فقط)
+        let isPast = false;
+        if (isToday) {
+          const [currentHour, currentMinute] = [now.getHours(), now.getMinutes()];
+          const slotTimeInMinutes = hour * 60 + minute;
+          const currentTimeInMinutes = currentHour * 60 + currentMinute;
+          isPast = slotTimeInMinutes <= currentTimeInMinutes;
+        }
+        
+        // تعطيل الخيار إذا كان الوقت في الماضي أو إذا كان عدد الحجوزات يساوي عدد الكراسي
+        opt.disabled = isPast || bookingsCount >= CHAIRS_COUNT;
+        opt.style.opacity = opt.disabled ? "0.4" : "1";
       });
     }
 
-    daysSelect.addEventListener("change", updateHours);
+    daysSelect.addEventListener("change", () => {
+      populateHours();
+      updateHours();
+    });
 
     form.addEventListener("submit", async e => {
       e.preventDefault();
@@ -1428,7 +1481,12 @@
       if (!name || !service || !day || !hour) return;
       const slotKey = `${day}_${hour}`;
 
-      if (currentBookings[slotKey]) return alert("عذرًا، هذا الموعد محجوز.");
+      // التحقق من توفر المقاعد في هذا الفاصل الزمني
+      const bookingsCount = currentBookings[slotKey] ? Object.keys(currentBookings[slotKey]).length : 0;
+      if (bookingsCount >= CHAIRS_COUNT) {
+        showToast("عذرًا، لا توجد مقاعد متاحة في هذا الوقت.");
+        return;
+      }
 
       const bookingId = Date.now().toString();
 
@@ -1584,4 +1642,3 @@
   </script>
 </body>
 </html>
-
