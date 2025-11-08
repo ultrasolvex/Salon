@@ -938,6 +938,51 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // ========== نظام حفظ حالة الجلسة ==========
+
+    /**
+     * التحقق من وجود بيانات تسجيل دخول صالحة
+     */
+    function checkStoredAuth() {
+      const storedUser = localStorage.getItem("currentUser");
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          // التحقق من صحة البيانات الأساسية
+          if (userData && userData.name && userData.phone && userData.userId) {
+            return userData;
+          }
+        } catch (e) {
+          console.error("Error parsing stored user data:", e);
+        }
+      }
+      return null;
+    }
+
+    /**
+     * تحديث وقت آخر نشاط للمستخدم
+     */
+    function updateUserActivity() {
+      if (currentUser) {
+        currentUser.lastActivity = new Date().toISOString();
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      }
+    }
+
+    /**
+     * التحقق من انتهاء الجلسة (اختياري - يمكن تعديل المدة)
+     */
+    function isSessionExpired(user) {
+      if (!user.lastActivity) return false;
+      
+      const lastActivity = new Date(user.lastActivity);
+      const now = new Date();
+      const hoursDiff = (now - lastActivity) / (1000 * 60 * 60);
+      
+      // الجلسة تنتهي بعد 7 أيام (يمكن تعديل المدة حسب الحاجة)
+      return hoursDiff > (24 * 7);
+    }
+
     // ========== نظام التوجيه (ROUTING) ==========
     
     // تعريف المسارات
@@ -1154,8 +1199,12 @@
      * التحقق من حالة المصادقة وإعادة التوجيه وفقًا لذلك
      */
     function checkAuthStatus() {
-      if (currentUser) {
-        // المستخدم مسجل دخول - إظهار الشاشة المناسبة بناءً على المسار
+      const storedUser = checkStoredAuth();
+      
+      if (storedUser && !isSessionExpired(storedUser)) {
+        currentUser = storedUser;
+        updateUserActivity(); // تحديث وقت النشاط
+        
         if (currentRoute === '/login') {
           navigateTo('/');
         } else {
@@ -1163,7 +1212,12 @@
         }
         bottomNav.style.display = "flex";
       } else {
-        // المستخدم غير مسجل دخول - إظهار شاشة تسجيل الدخول
+        // إذا انتهت الجلسة أو لا يوجد مستخدم، مسح البيانات القديمة
+        if (storedUser && isSessionExpired(storedUser)) {
+          localStorage.removeItem("currentUser");
+          localStorage.removeItem("myBooking");
+        }
+        
         navigateTo('/login', false);
         bottomNav.style.display = "none";
       }
@@ -1177,12 +1231,14 @@
         name, 
         phone, 
         userId: Date.now().toString(),
-        loginTime: new Date().toISOString()
+        loginTime: new Date().toISOString(),
+        lastActivity: new Date().toISOString(),
+        sessionId: 'session_' + Math.random().toString(36).substr(2, 9)
       };
+      
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
       showToast(`مرحباً ${name}!`);
       
-      // إعادة التوجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
       navigateTo('/');
       bottomNav.style.display = "flex";
     }
@@ -1193,6 +1249,7 @@
     function logoutUser() {
       currentUser = null;
       localStorage.removeItem("currentUser");
+      localStorage.removeItem("myBooking");
       showToast("تم تسجيل الخروج بنجاح");
       navigateTo('/login');
       bottomNav.style.display = "none";
@@ -1930,6 +1987,13 @@
     
     // تهيئة التطبيق
     function initApp() {
+      // تحميل بيانات المستخدم أولاً
+      const storedUser = checkStoredAuth();
+      if (storedUser && !isSessionExpired(storedUser)) {
+        currentUser = storedUser;
+        updateUserActivity();
+      }
+      
       initRouter(); // تهيئة نظام التوجيه أولاً
       checkAuthStatus(); // ثم التحقق من المصادقة
       
@@ -1945,10 +2009,17 @@
           icon.parentElement.replaceChild(img, icon);
         }
       });
+      
+      // إضافة مستمعي الأحداث لتحديث النشاط
+      document.addEventListener('click', updateUserActivity);
+      document.addEventListener('touchstart', updateUserActivity);
+      document.addEventListener('keypress', updateUserActivity);
     }
 
     // بدء التطبيق
-    initApp();
+    document.addEventListener('DOMContentLoaded', function() {
+      initApp();
+    });
   </script>
 </body>
 </html>
