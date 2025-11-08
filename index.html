@@ -979,8 +979,8 @@
       const now = new Date();
       const hoursDiff = (now - lastActivity) / (1000 * 60 * 60);
       
-      // الجلسة تنتهي بعد 7 أيام (يمكن تعديل المدة حسب الحاجة)
-      return hoursDiff > (24 * 7);
+      // الجلسة تنتهي بعد 30 يوم (يمكن تعديل المدة حسب الحاجة)
+      return hoursDiff > (24 * 30);
     }
 
     // ========== نظام التوجيه (ROUTING) ==========
@@ -1046,9 +1046,6 @@
      * @param {boolean} pushState - هل يتم إضافة إلى سجل المتصفح
      */
     function navigateTo(route, pushState = true) {
-      // إظهار مؤشر التحميل
-      showLoading(true);
-      
       // التحقق من وجود المسار
       if (!routes[route]) {
         route = '/';
@@ -1058,7 +1055,6 @@
       
       // التحقق من المصادقة
       if (routeConfig.authRequired && !currentUser) {
-        showLoading(false);
         navigateTo('/login', pushState);
         return;
       }
@@ -1089,9 +1085,6 @@
 
       // تحديث حالة التنقل النشط
       updateNavActive(routeConfig.navItem);
-
-      // إخفاء مؤشر التحميل
-      setTimeout(() => showLoading(false), 300);
     }
 
     /**
@@ -1161,19 +1154,6 @@
       loginForm.reset();
       updateCharCounter(userName, userNameCounter, 50);
       updateCharCounter(userPhone, userPhoneCounter, 11);
-    }
-
-    /**
-     * إظهار/إخفاء مؤشر التحميل
-     * @param {boolean} show - هل يتم إظهار مؤشر التحميل
-     */
-    function showLoading(show) {
-      const loadingIndicator = document.getElementById('loadingIndicator');
-      if (show) {
-        loadingIndicator.classList.add('show');
-      } else {
-        loadingIndicator.classList.remove('show');
-      }
     }
 
     /**
@@ -1310,7 +1290,7 @@
     const nameInput = document.getElementById("name");
 
     // بيانات المستخدم
-    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+    let currentUser = null;
     let myBooking = JSON.parse(localStorage.getItem("myBooking")) || null;
     let bookingToCancel = null;
     let currentBookings = {};
