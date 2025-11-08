@@ -13,6 +13,7 @@
       --bg-dark: #000010;
       --input-bg: rgba(255,255,255,0.06);
       --error: #ff1744;   /* لون رسائل الخطأ */
+      --success: #22d97a; /* لون النجاح */
     }
 
     * {
@@ -355,9 +356,16 @@
     }
 
     .nav-icon {
-      font-size: 1.8rem;
-      margin-bottom: 0;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
       filter: drop-shadow(0 0 5px rgba(0,255,255,0.3));
+      object-fit: contain;
+    }
+
+    .nav-label {
+      font-size: 0.75rem;
+      margin-top: 2px;
     }
 
     /* شاشة الملف الشخصي */
@@ -541,7 +549,7 @@
     /* زر الإعدادات في الملف الشخصي */
     .settings-btn {
       position: absolute;
-      bottom: 20px;
+      bottom: 90px;
       left: 50%;
       transform: translateX(-50%);
       background: linear-gradient(135deg, #00ffff, #00ffff);
@@ -558,11 +566,41 @@
       justify-content: center;
       box-shadow: 0 0 25px rgba(0,255,255,0.5);
       transition: all 0.3s ease;
+      z-index: 10;
     }
 
     .settings-btn:hover {
       transform: translateX(-50%) scale(1.1);
       box-shadow: 0 0 35px rgba(0,255,255,0.7);
+    }
+
+    /* زر التأكيد في الملف الشخصي */
+    .confirm-save-btn {
+      position: absolute;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #22d97a, #00ffff);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 1.5rem;
+      border-radius: 50%; /* دائري بالكامل */
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(34,217,122,0.5);
+      transition: all 0.3s ease;
+      z-index: 10;
+      display: none;
+    }
+
+    .confirm-save-btn:hover {
+      transform: translateX(-50%) scale(1.1);
+      box-shadow: 0 0 35px rgba(34,217,122,0.7);
     }
 
     /* رسالة الحجز النشط في شاشة الحجوزات */
@@ -672,6 +710,51 @@
       background: #d50032;
       transform: scale(1.05);
     }
+
+    /* زر تسجيل الخروج */
+    .logout-btn {
+      background: linear-gradient(135deg, #ff1744, #ff5252);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255,23,68,0.3);
+      margin-top: 20px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 85%;
+    }
+
+    .logout-btn:hover {
+      transform: translateX(-50%) scale(1.03);
+      box-shadow: 0 0 25px rgba(255,23,68,0.5);
+    }
+
+    /* مؤشر التحميل */
+    .loading-indicator {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--primary);
+      font-size: 1.2rem;
+      z-index: 10000;
+      background: rgba(0,0,0,0.8);
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .loading-indicator.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -764,8 +847,14 @@
         </div>
       </div>
       
-      <!-- زر الإعدادات في شاشة الملف الشخصي -->
+      <!-- زر تسجيل الخروج -->
+      <button class="logout-btn" id="logoutBtn">تسجيل الخروج</button>
+      
+      <!-- زر الإعدادات في الملف الشخصي -->
       <button class="settings-btn" id="settingsBtn">⚙️</button>
+      
+      <!-- زر التأكيد في الملف الشخصي -->
+      <button class="confirm-save-btn" id="confirmSaveBtn">✓</button>
     </div>
   </div>
 
@@ -791,28 +880,26 @@
     </div>
   </div>
 
-  <!-- 🔹 شريط التنقل السفلي -->
-  <!-- 🔹 شريط التنقل السفلي -->
-<div class="bottom-nav" id="bottomNav">
-  <div class="nav-item active" id="navHome">
-    <!-- 🏠 أيقونة الرئيسية -->
-    <img src="home-button.png" alt="الرئيسية" class="nav-icon">
-    <span class="nav-label">الرئيسية</span>
-  </div>
+  <!-- شريط التنقل السفلي -->
+  <div class="bottom-nav" id="bottomNav">
+    <div class="nav-item active" data-route="/" id="navHome">
+      <!-- أيقونة الرئيسية -->
+      <img src="home-button.png" alt="الرئيسية" class="nav-icon">
+      <span class="nav-label">الرئيسية</span>
+    </div>
 
-  <div class="nav-item" id="navBookings">
-    <!-- 📔 أيقونة الحجوزات -->
-    <img src="order-history.png" alt="الحجوزات" class="nav-icon">
-    <span class="nav-label">الحجوزات</span>
-  </div>
+    <div class="nav-item" data-route="/bookings" id="navBookings">
+      <!-- أيقونة الحجوزات -->
+      <img src="order-history.png" alt="الحجوزات" class="nav-icon">
+      <span class="nav-label">الحجوزات</span>
+    </div>
 
-  <div class="nav-item" id="navProfile">
-    <!-- 👤 أيقونة الملف الشخصي -->
-    <img src="profile.png" alt="الملف الشخصي" class="nav-icon">
-    <span class="nav-label">الملف</span>
+    <div class="nav-item" data-route="/profile" id="navProfile">
+      <!-- أيقونة الملف الشخصي -->
+      <img src="profile.png" alt="الملف الشخصي" class="nav-icon">
+      <span class="nav-label">الملف</span>
+    </div>
   </div>
-</div>
-
 
   <!-- نافذة تأكيد الإلغاء -->
   <div id="confirmationModal" class="confirmation-modal">
@@ -824,6 +911,11 @@
         <button class="confirm-no" id="confirmNo">✗ لا</button>
       </div>
     </div>
+  </div>
+
+  <!-- مؤشر التحميل -->
+  <div id="loadingIndicator" class="loading-indicator">
+    جاري التحميل...
   </div>
 
   <div id="successToast" class="success-toast"></div>
@@ -845,6 +937,266 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+
+    // ========== نظام التوجيه (ROUTING) ==========
+    
+    // تعريف المسارات
+    const routes = {
+      '/': {
+        name: 'home',
+        screen: 'mainScreen',
+        navItem: 'navHome',
+        authRequired: true
+      },
+      '/bookings': {
+        name: 'bookings', 
+        screen: 'bookingsScreen',
+        navItem: 'navBookings',
+        authRequired: true
+      },
+      '/profile': {
+        name: 'profile',
+        screen: 'profileScreen', 
+        navItem: 'navProfile',
+        authRequired: true
+      },
+      '/login': {
+        name: 'login',
+        screen: 'loginScreen',
+        authRequired: false
+      }
+    };
+
+    // حالة المسار الحالي
+    let currentRoute = '/';
+
+    /**
+     * تهيئة نظام التوجيه
+     */
+    function initRouter() {
+      // التعامل مع أزرار الرجوع/التقدم في المتصفح
+      window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.route) {
+          navigateTo(event.state.route, false);
+        }
+      });
+
+      // التعامل مع النقر على عناصر التنقل
+      document.querySelectorAll('.nav-item[data-route]').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const route = item.getAttribute('data-route');
+          navigateTo(route);
+        });
+      });
+
+      // المسار الأولي بناءً على الرابط أو الافتراضي
+      const initialRoute = window.location.hash.replace('#', '') || '/';
+      navigateTo(initialRoute, false);
+    }
+
+    /**
+     * الانتقال إلى مسار محدد
+     * @param {string} route - مسار الوجهة
+     * @param {boolean} pushState - هل يتم إضافة إلى سجل المتصفح
+     */
+    function navigateTo(route, pushState = true) {
+      // إظهار مؤشر التحميل
+      showLoading(true);
+      
+      // التحقق من وجود المسار
+      if (!routes[route]) {
+        route = '/';
+      }
+
+      const routeConfig = routes[route];
+      
+      // التحقق من المصادقة
+      if (routeConfig.authRequired && !currentUser) {
+        showLoading(false);
+        navigateTo('/login', pushState);
+        return;
+      }
+
+      // تحديث رابط المتصفح إذا لزم الأمر
+      if (pushState) {
+        window.history.pushState({ route }, '', `#${route}`);
+      }
+
+      // تحديث المسار الحالي
+      currentRoute = route;
+      
+      // إخفاء جميع الشاشات أولاً
+      document.querySelectorAll('.screen, .login-screen').forEach(screen => {
+        screen.style.display = 'none';
+        screen.classList.remove('active');
+      });
+
+      // إظهار الشاشة المستهدفة
+      const targetScreen = document.getElementById(routeConfig.screen);
+      if (targetScreen) {
+        targetScreen.style.display = 'flex';
+        targetScreen.classList.add('active');
+        
+        // تهيئة خاصة لكل مسار
+        initializeRoute(route);
+      }
+
+      // تحديث حالة التنقل النشط
+      updateNavActive(routeConfig.navItem);
+
+      // إخفاء مؤشر التحميل
+      setTimeout(() => showLoading(false), 300);
+    }
+
+    /**
+     * تهيئة مسار محدد
+     * @param {string} route - المسار المراد تهيئته
+     */
+    function initializeRoute(route) {
+      switch(route) {
+        case '/':
+          initializeHomeScreen();
+          break;
+        case '/bookings':
+          initializeBookingsScreen();
+          break;
+        case '/profile':
+          initializeProfileScreen();
+          break;
+        case '/login':
+          initializeLoginScreen();
+          break;
+      }
+    }
+
+    /**
+     * تهيئة شاشة الرئيسية
+     */
+    function initializeHomeScreen() {
+      if (currentUser) {
+        nameInput.value = currentUser.name;
+        populateDays();
+        populateHours();
+        updateCharCounter(nameInput, nameCounter, 50);
+      }
+    }
+
+    /**
+     * تهيئة شاشة الحجوزات
+     */
+    function initializeBookingsScreen() {
+      loadUserBookings();
+      
+      // إظهار لافتة الحجز النشط إذا كانت موجودة
+      if (myBooking) {
+        activeBookingBanner.classList.remove("hidden");
+        activeBookingBanner.onclick = () => showDetails(myBooking);
+      } else {
+        activeBookingBanner.classList.add("hidden");
+      }
+    }
+
+    /**
+     * تهيئة شاشة الملف الشخصي
+     */
+    function initializeProfileScreen() {
+      profileName.textContent = currentUser.name;
+      profilePhone.textContent = currentUser.phone;
+      editProfileForm.classList.add("hidden");
+      // إعادة تعيين الأيقونات إلى الحالة الافتراضية
+      resetSettingsIcons();
+    }
+
+    /**
+     * تهيئة شاشة تسجيل الدخول
+     */
+    function initializeLoginScreen() {
+      // إعادة تعيين النموذج
+      loginForm.reset();
+      updateCharCounter(userName, userNameCounter, 50);
+      updateCharCounter(userPhone, userPhoneCounter, 11);
+    }
+
+    /**
+     * إظهار/إخفاء مؤشر التحميل
+     * @param {boolean} show - هل يتم إظهار مؤشر التحميل
+     */
+    function showLoading(show) {
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      if (show) {
+        loadingIndicator.classList.add('show');
+      } else {
+        loadingIndicator.classList.remove('show');
+      }
+    }
+
+    /**
+     * تحديث حالة التنقل النشط
+     * @param {string} activeId - معرف عنصر التنقل النشط
+     */
+    function updateNavActive(activeId) {
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      if (activeId) {
+        const activeItem = document.getElementById(activeId);
+        if (activeItem) {
+          activeItem.classList.add('active');
+        }
+      }
+    }
+
+    // ========== نظام المصادقة ==========
+    
+    /**
+     * التحقق من حالة المصادقة وإعادة التوجيه وفقًا لذلك
+     */
+    function checkAuthStatus() {
+      if (currentUser) {
+        // المستخدم مسجل دخول - إظهار الشاشة المناسبة بناءً على المسار
+        if (currentRoute === '/login') {
+          navigateTo('/');
+        } else {
+          navigateTo(currentRoute, false);
+        }
+        bottomNav.style.display = "flex";
+      } else {
+        // المستخدم غير مسجل دخول - إظهار شاشة تسجيل الدخول
+        navigateTo('/login', false);
+        bottomNav.style.display = "none";
+      }
+    }
+
+    /**
+     * تسجيل دخول المستخدم وإعادة التوجيه
+     */
+    function loginUser(name, phone) {
+      currentUser = { 
+        name, 
+        phone, 
+        userId: Date.now().toString(),
+        loginTime: new Date().toISOString()
+      };
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      showToast(`مرحباً ${name}!`);
+      
+      // إعادة التوجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
+      navigateTo('/');
+      bottomNav.style.display = "flex";
+    }
+
+    /**
+     * تسجيل خروج المستخدم وإعادة التوجيه إلى تسجيل الدخول
+     */
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem("currentUser");
+      showToast("تم تسجيل الخروج بنجاح");
+      navigateTo('/login');
+      bottomNav.style.display = "none";
+    }
 
     // عناصر DOM
     const loginScreen = document.getElementById("loginScreen");
@@ -868,12 +1220,14 @@
     const bookingsList = document.getElementById("bookingsList");
     const noBookingsMessage = document.getElementById("noBookingsMessage");
     const settingsBtn = document.getElementById("settingsBtn");
+    const confirmSaveBtn = document.getElementById("confirmSaveBtn");
     const activeBookingBanner = document.getElementById("activeBookingBanner");
     const loginBtn = document.getElementById("loginBtn");
     const submitBtn = document.getElementById("submitBtn");
     const confirmationModal = document.getElementById("confirmationModal");
     const confirmYes = document.getElementById("confirmYes");
     const confirmNo = document.getElementById("confirmNo");
+    const logoutBtn = document.getElementById("logoutBtn");
     
     // عدادات الأحرف
     const userNameCounter = document.getElementById("userNameCounter");
@@ -901,15 +1255,136 @@
     // بيانات المستخدم
     let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
     let myBooking = JSON.parse(localStorage.getItem("myBooking")) || null;
-    let bookingToCancel = null; // لتخزين الحجز المراد إلغاؤه
+    let bookingToCancel = null;
+    let currentBookings = {};
 
-    // التحقق من وجود مستخدم مسجل
-    if (currentUser) {
-      showMainScreen();
-    } else {
-      // إخفاء الدوك حتى يتم تسجيل الدخول
-      bottomNav.style.display = "none";
+    // ========== وظائف تبديل الأيقونات ==========
+    
+    /**
+     * تبديل الأيقونة من الإعدادات إلى التأكيد
+     */
+    function switchToConfirmIcon() {
+      settingsBtn.style.display = 'none';
+      confirmSaveBtn.style.display = 'flex';
     }
+
+    /**
+     * تبديل الأيقونة من التأكيد إلى الإعدادات
+     */
+    function switchToSettingsIcon() {
+      confirmSaveBtn.style.display = 'none';
+      settingsBtn.style.display = 'flex';
+    }
+
+    /**
+     * إعادة تعيين الأيقونات إلى الحالة الافتراضية
+     */
+    function resetSettingsIcons() {
+      switchToSettingsIcon();
+    }
+
+    /**
+     * عرض رسالة نجاح التحديث
+     */
+    function showUpdateSuccess() {
+      showToast("تم تحديث البيانات بنجاح ✓");
+    }
+
+    // ========== مستمعي الأحداث ==========
+    
+    // تسجيل الدخول
+    loginForm.addEventListener("submit", e => {
+      e.preventDefault();
+      
+      if (!validateLoginForm()) {
+        showToast("يرجى تصحيح الأخطاء في النموذج");
+        return;
+      }
+      
+      const name = userName.value.trim();
+      const phone = userPhone.value.trim();
+      
+      if (!name || !phone) return;
+      
+      loginUser(name, phone);
+    });
+
+    // تسجيل الخروج
+    logoutBtn.addEventListener("click", logoutUser);
+
+    // تعديل الملف الشخصي - زر الإعدادات
+    settingsBtn.addEventListener("click", () => {
+      editName.value = currentUser.name;
+      editPhone.value = currentUser.phone;
+      updateCharCounter(editName, editNameCounter, 50);
+      updateCharCounter(editPhone, editPhoneCounter, 11);
+      editProfileForm.classList.remove("hidden");
+      
+      // تبديل الأيقونة إلى التأكيد
+      switchToConfirmIcon();
+    });
+
+    // حفظ التعديلات - زر التأكيد
+    confirmSaveBtn.addEventListener("click", () => {
+      if (!validateEditProfileForm()) {
+        showToast("يرجى تصحيح الأخطاء في النموذج");
+        return;
+      }
+      
+      const newName = editName.value.trim();
+      const newPhone = editPhone.value.trim();
+      
+      if (!newName || !newPhone) return;
+      
+      currentUser.name = newName;
+      currentUser.phone = newPhone;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      
+      nameInput.value = newName;
+      updateCharCounter(nameInput, nameCounter, 50);
+      
+      profileName.textContent = newName;
+      profilePhone.textContent = newPhone;
+      
+      editProfileForm.classList.add("hidden");
+      
+      // تبديل الأيقونة إلى الإعدادات
+      switchToSettingsIcon();
+      
+      // عرض رسالة النجاح
+      showUpdateSuccess();
+    });
+
+    // زر التأكيد داخل نموذج التعديل
+    confirmEdit.addEventListener("click", () => {
+      if (!validateEditProfileForm()) {
+        showToast("يرجى تصحيح الأخطاء في النموذج");
+        return;
+      }
+      
+      const newName = editName.value.trim();
+      const newPhone = editPhone.value.trim();
+      
+      if (!newName || !newPhone) return;
+      
+      currentUser.name = newName;
+      currentUser.phone = newPhone;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      
+      nameInput.value = newName;
+      updateCharCounter(nameInput, nameCounter, 50);
+      
+      profileName.textContent = newName;
+      profilePhone.textContent = newPhone;
+      
+      editProfileForm.classList.add("hidden");
+      
+      // تبديل الأيقونة إلى الإعدادات
+      switchToSettingsIcon();
+      
+      // عرض رسالة النجاح
+      showUpdateSuccess();
+    });
 
     // ========== وظائف التحقق من صحة الإدخال ==========
     
@@ -1228,128 +1703,6 @@
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    function showMainScreen() {
-      loginScreen.classList.add("hidden");
-      document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-      });
-      mainScreen.classList.add('active');
-      updateNavActive('navHome');
-      nameInput.value = currentUser.name;
-      populateDays();
-      populateHours();
-      
-      // إخفاء رسالة الحجز النشط من الشاشة الرئيسية - حسب طلب المستخدم
-      // لا تظهر أي رسائل في الصفحة الرئيسية
-    }
-
-    function showProfileScreen() {
-      document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-      });
-      profileScreen.classList.add('active');
-      updateNavActive('navProfile');
-      profileName.textContent = currentUser.name;
-      profilePhone.textContent = currentUser.phone;
-      editProfileForm.classList.add("hidden");
-    }
-
-    function showBookingsScreen() {
-      document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-      });
-      bookingsScreen.classList.add('active');
-      updateNavActive('navBookings');
-      loadUserBookings();
-      
-      // عرض رسالة الحجز النشط في شاشة الحجوزات فقط
-      if (myBooking) {
-        activeBookingBanner.classList.remove("hidden");
-        activeBookingBanner.onclick = () => showDetails(myBooking);
-      } else {
-        activeBookingBanner.classList.add("hidden");
-      }
-    }
-
-    function updateNavActive(activeId) {
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      document.getElementById(activeId).classList.add('active');
-    }
-
-    // ========== تسجيل الدخول ==========
-    
-    loginForm.addEventListener("submit", e => {
-      e.preventDefault();
-      
-      // التحقق من صحة النموذج
-      if (!validateLoginForm()) {
-        showToast("يرجى تصحيح الأخطاء في النموذج");
-        return;
-      }
-      
-      const name = userName.value.trim();
-      const phone = userPhone.value.trim();
-      
-      if (!name || !phone) return;
-      
-      // حفظ بيانات المستخدم
-      currentUser = { name, phone, userId: Date.now().toString() };
-      localStorage.setItem("currentUser", JSON.stringify(currentUser));
-      
-      showToast(`مرحباً ${name}!`);
-      showMainScreen();
-      
-      // إظهار الدوك بعد تسجيل الدخول
-      bottomNav.style.display = "flex";
-    });
-
-    // ========== التنقل بين الشاشات ==========
-    
-    navHome.addEventListener("click", showMainScreen);
-    navProfile.addEventListener("click", showProfileScreen);
-    navBookings.addEventListener("click", showBookingsScreen);
-
-    // ========== تعديل الملف الشخصي ==========
-    
-    settingsBtn.addEventListener("click", () => {
-      editName.value = currentUser.name;
-      editPhone.value = currentUser.phone;
-      updateCharCounter(editName, editNameCounter, 50);
-      updateCharCounter(editPhone, editPhoneCounter, 11);
-      editProfileForm.classList.remove("hidden");
-    });
-
-    confirmEdit.addEventListener("click", () => {
-      // التحقق من صحة النموذج
-      if (!validateEditProfileForm()) {
-        showToast("يرجى تصحيح الأخطاء في النموذج");
-        return;
-      }
-      
-      const newName = editName.value.trim();
-      const newPhone = editPhone.value.trim();
-      
-      if (!newName || !newPhone) return;
-      
-      // تحديث بيانات المستخدم
-      currentUser.name = newName;
-      currentUser.phone = newPhone;
-      localStorage.setItem("currentUser", JSON.stringify(currentUser));
-      
-      // تحديث الحقول في واجهة الحجز
-      nameInput.value = newName;
-      updateCharCounter(nameInput, nameCounter, 50);
-      
-      // تحديث عرض الملف الشخصي
-      profileName.textContent = newName;
-      profilePhone.textContent = newPhone;
-      
-      editProfileForm.classList.add("hidden");
-      showToast("تم تحديث بياناتك بنجاح");
-    });
-
     // ========== وظائف الحجز ==========
     
     function populateDays() {
@@ -1377,7 +1730,6 @@
     }
 
     const bookingsRef = ref(db, "bookings");
-    let currentBookings = {};
 
     onValue(bookingsRef, snap => {
       currentBookings = snap.val() || {};
@@ -1576,13 +1928,27 @@
 
     // ========== تهيئة أولية ==========
     
-    if (currentUser) {
-      populateDays();
-      populateHours();
-      updateCharCounter(nameInput, nameCounter, 50);
+    // تهيئة التطبيق
+    function initApp() {
+      initRouter(); // تهيئة نظام التوجيه أولاً
+      checkAuthStatus(); // ثم التحقق من المصادقة
+      
+      // استبدال الأيقونات النصية بأيقونات الصور
+      document.querySelectorAll('.nav-icon').forEach(icon => {
+        if (icon.tagName === 'SPAN') {
+          const img = document.createElement('img');
+          img.src = icon.textContent === '🏠' ? 'home-button.png' : 
+                    icon.textContent === '📔' ? 'order-history.png' : 
+                    'profile.png';
+          img.alt = icon.parentElement.querySelector('.nav-label').textContent;
+          img.className = 'nav-icon';
+          icon.parentElement.replaceChild(img, icon);
+        }
+      });
     }
+
+    // بدء التطبيق
+    initApp();
   </script>
 </body>
 </html>
-
-
