@@ -41,7 +41,6 @@
     .nav-item.active{color:var(--primary);background:rgba(0,255,255,0.1);}
     .nav-icon{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(0,255,255,0.3));}
     .nav-item.active .nav-icon{filter:drop-shadow(0 0 12px rgba(0,255,255,0.8));transform:scale(1.2);}
-    /* تم حذف النصوص من تحت الأيقونات */
     .hidden{display:none!important;}
     .phone-display{direction:ltr;text-align:center;font-weight:700;font-size:1.1rem;color:var(--accent);margin:8px 0;padding:6px 12px;background:rgba(0,255,255,0.1);border-radius:8px;border:1px solid var(--accent);}
     .booking-status{color:var(--success);font-weight:700;margin:10px 0;padding:8px;background:rgba(34,217,122,0.1);border-radius:8px;border:1px solid var(--success);}
@@ -68,11 +67,10 @@
   <div id="mainScreen" class="screen active">
     <div class="container">
       <h1>احجز موعدك الآن</h1>
-      <!-- تم حذف بطاقة التفاصيل من هنا نهائيًا -->
       <form id="bookingForm">
         <label for="name">الاسم الكامل</label>
-        <input type="text" id="name" required placeholder="أدخل اسمك الكامل (عربي فقط)">
-        <div class="error-message" id="nameError">الاسم يجب أن يكون عربي فقط (7-50 حرف)</div>
+        <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
+        <div class="error-message" id="nameError"></div>
         
         <label for="phone">رقم الموبايل</label>
         <input type="tel" id="phone" required placeholder="أدخل رقم الجوال (11 رقم)">
@@ -100,9 +98,7 @@
         لديك حجز نشط - اضغط لعرض التفاصيل
       </div>
       
-      <div id="bookingsList">
-        <!-- تفاصيل الحجز هتظهر هنا بس -->
-      </div>
+      <div id="bookingsList"></div>
       
       <div id="noBookingsMessage" class="no-bookings hidden">
         <p>لا توجد حجوزات حالياً</p>
@@ -110,17 +106,13 @@
     </div>
   </div>
 
-  <!-- الشريط السفلي بدون كلام -->
+  <!-- الشريط السفلي -->
   <div class="bottom-nav" id="bottomNav">
     <div class="nav-item active" id="navHome">
-      <!-- ضع هنا أيقونة الرئيسية -->
       <img src="home-button.png" class="nav-icon" alt="الرئيسية">
-      <!-- مثال: src="icons/home.svg" أو src="https://.../home.png" -->
     </div>
     <div class="nav-item" id="navBookings">
-      <!-- ضع هنا أيقونة الحجوزات -->
       <img src="order-history.png" class="nav-icon" alt="الحجوزات">
-      <!-- مثال: src="icons/calendar.svg" أو أي أيقونة تحبها -->
     </div>
   </div>
 
@@ -189,30 +181,68 @@
       return `${h}:${m} ${period}`;
     }
 
-    function isValidName(n) { return /^[\u0600-\u06FF\s]{7,50}$/.test(n.trim()); }
+    // دالة التحقق من الاسم (عربي أو إنجليزي + مسافات + لا أكثر من 3 مسافات متتالية)
+    function isValidName(n) {
+      const trimmed = n.trim();
+      if (trimmed.length < 7 || trimmed.length > 50) return false;
+      if (!/^[\u0600-\u06FFa-zA-Z\s]+$/.test(trimmed)) return false; // فقط حروف ومسافات
+      if (/\s{4,}/.test(trimmed)) return false; // ممنوع 4 مسافات أو أكثر متتالية
+      return true;
+    }
+
     function isValidPhone(p) { return /^[0-9]{11}$/.test(p); }
+
+    // منع الأرقام في الاسم
+    nameInput.addEventListener("keydown", e => {
+      if (/[0-9]/.test(e.key)) e.preventDefault();
+    });
+
+    // منع أكثر من 3 مسافات متتالية أثناء الكتابة
+    nameInput.addEventListener("input", () => {
+      let value = nameInput.value;
+      // استبدال 4 مسافات أو أكثر بـ 3 مسافات فقط
+      value = value.replace(/\s{4,}/g, '   ');
+      nameInput.value = value;
+    });
 
     // التحقق من الحقول
     nameInput.addEventListener("input", () => {
       const v = nameInput.value;
-      if (v && !isValidName(v)) { nameInput.classList49.add("invalid"); nameError.style.display = "block"; }
-      else { nameInput.classList.remove("invalid"); nameInput.classList.add("valid"); nameError.style.display = "none"; }
+      if (v && !isValidName(v)) {
+        nameInput.classList.remove("valid");
+        nameInput.classList.add("invalid");
+        nameError.style.display = "block";
+      } else {
+        nameInput.classList.remove("invalid");
+        nameInput.classList.add("valid");
+        nameError.style.display = "none";
+      }
     });
 
     phoneInput.addEventListener("input", () => {
       const v = phoneInput.value;
-      if (v && !isValidPhone(v)) { phoneInput.classList.add("invalid"); phoneError.style.display = "block"; }
-      else { phoneInput.classList.remove("invalid"); phoneInput.classList.add("valid"); phoneError.style.display = "none"; }
+      if (v && !isValidPhone(v)) {
+        phoneInput.classList.add("invalid");
+        phoneError.style.display = "block";
+      } else {
+        phoneInput.classList.remove("invalid");
+        phoneInput.classList.add("valid");
+        phoneError.style.display = "none";
+      }
     });
 
-    nameInput.addEventListener("keydown", e => { if (/[0-9]/.test(e.key)) e.preventDefault(); });
-    phoneInput.addEventListener("keydown", e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) e.preventDefault(); });
+    phoneInput.addEventListener("keydown", e => {
+      if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) e.preventDefault();
+    });
 
     function showToast(msg) {
       toast.textContent = msg;
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
+
+    // باقي الكود زي ما هو (التنقل، الأيام، الحجز، إلخ...)
+    // ... (كل الـ script اللي تحت من غير تغيير)
 
     // التنقل بين الشاشات
     function showMainScreen() {
@@ -351,7 +381,6 @@
       }, 1500);
     });
 
-    // عرض تفاصيل الحجز داخل صفحة الحجوزات فقط
     function showBookingInList(b) {
       const d = new Date(b.day);
       const [h, m] = b.time.split(":").map(Number);
@@ -367,7 +396,6 @@
         </div>
       `;
 
-      // إذا كان موجود بالفعل، لا نضيفه تاني
       if (!document.querySelector(`[data-bid="${b.bookingId}"]`)) {
         const div = document.createElement("div");
         div.innerHTML = detailsHTML;
@@ -379,7 +407,6 @@
       }
     }
 
-    // تأكيد الإلغاء
     function showCancelConfirmation(booking) {
       bookingToCancel = booking;
       confirmationModal.style.display = "flex";
@@ -405,7 +432,6 @@
 
     confirmNo.onclick = hideCancelConfirmation;
 
-    // تحميل كل الحجوزات
     function loadUserBookings() {
       bookingsList.innerHTML = "";
       if (!currentUser || !currentBookings || Object.keys(currentBookings).length === 0) {
@@ -431,10 +457,7 @@
 
       noBookingsMessage.classList.add("hidden");
       userBookings.sort((a, b) => a.day.localeCompare(b.day));
-
-      userBookings.forEach(booking => {
-        showBookingInList(booking);
-      });
+      userBookings.forEach(booking => showBookingInList(booking));
     }
 
     // بدء التطبيق
