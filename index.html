@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>صالون التميز - الحجز الفاخر</title>
+  <title>نظام الحجز الفاخر</title>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -13,14 +13,14 @@
       --bg-dark: #000010;
       --input-bg: rgba(255,255,255,0.06);
       --error: #ff1744;
+      --success: #22d97a;
     }
     * {margin:0;padding:0;box-sizing:border-box;font-family:'Almarai',sans-serif;}
     body {background:linear-gradient(135deg,#000010,#03008a 60%,#000);color:var(--text);min-height:100vh;padding:15px;padding-bottom:80px;position:relative;-webkit-font-smoothing:antialiased;user-select:none;scroll-behavior:smooth;}
     body::before {content:"";position:fixed;top:0;left:0;width:200%;height:200%;background:radial-gradient(circle,rgba(0,255,255,0.15),transparent 70%);z-index:-1;animation:bgMove 15s infinite linear;}
     @keyframes bgMove {0%{transform:translate(-50%,-50%)}100%{transform:translate(-25%,-25%)}}
     .container {background:rgba(255,255,255,0.06);padding:28px 22px;border-radius:30px;border:2px solid rgba(0,255,255,0.35);box-shadow:inset 0 0 25px rgba(0,255,255,0.25),0 0 35px rgba(0,255,255,0.25);max-width:460px;width:100%;text-align:center;position:relative;backdrop-filter:blur(20px) saturate(180%);margin:20px auto;}
-    h1 {color:var(--primary);margin-bottom:10px;font-size:1.9rem;font-weight:800;text-shadow:0 0 15px rgba(0,255,255,0.6),0 0 30px rgba(0,255,255,0.3);}
-    .subtitle {color:#ccc;font-size:1rem;margin-bottom:24px;opacity:0.8;}
+    h1 {color:var(--primary);margin-bottom:20px;font-size:1.9rem;font-weight:800;text-shadow:0 0 15px rgba(0,255,255,0.6);}
     label {display:block;margin-bottom:6px;color:var(--accent);font-weight:600;text-align:right;}
     input,select {width:100%;padding:14px 16px;border:2px solid var(--primary);border-radius:16px;background:var(--input-bg);color:var(--accent);font-size:1rem;transition:all .3s ease;margin-bottom:18px;appearance:none;}
     input.valid{border-color:var(--primary);box-shadow:0 0 10px rgba(0,255,255,0.3);}
@@ -28,28 +28,23 @@
     input::placeholder{color:rgba(0,255,255,0.5);}
     input:focus,select:focus{outline:none;border-color:#00ffff;box-shadow:0 0 20px rgba(0,255,255,0.4);transform:scale(1.02);}
     .error-message{color:var(--error);font-size:.85rem;margin-top:-12px;margin-bottom:15px;text-align:right;display:none;font-weight:600;}
-    button[type=submit],.login-btn{background:linear-gradient(135deg,#00ffff,#00ffff);color:black;border:none;padding:15px 32px;font-size:1.15rem;font-weight:700;border-radius:20px;cursor:pointer;width:100%;transition:all .3s ease;box-shadow:0 0 20px rgba(0,255,255,0.3);margin-top:24px;}
-    button[type=submit]:hover,.login-btn:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(0,255,255,0.5);}
-    .details-card{background:rgba(255,255,255,0.06);border:1.5px solid var(--primary);border-radius:16px;padding:22px;margin-top:18px;display:none;box-shadow:0 0 20px rgba(0,255,255,0.2);}
+    button[type=submit]{background:linear-gradient(135deg,#00ffff,#00ffff);color:black;border:none;padding:15px 32px;font-size:1.15rem;font-weight:700;border-radius:20px;cursor:pointer;width:100%;transition:all .3s ease;box-shadow:0 0 20px rgba(0,255,255,0.3);margin-top:24px;}
+    button[type=submit]:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(0,255,255,0.5);}
+    .details-card{background:rgba(255,255,255,0.06);border:1.5px solid var(--primary);border-radius:16px;padding:22px;margin-top:18px;box-shadow:0 0 20px rgba(0,255,255,0.2);}
     .details-card h3{color:var(--accent);margin-bottom:14px;font-size:1.2rem;}
     .cancel-btn{background:#ff1744;color:white;padding:10px 24px;border:none;border-radius:10px;cursor:pointer;margin-top:16px;font-weight:600;}
     .cancel-btn:hover{background:#d50032;}
     .success-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);background:linear-gradient(135deg,#00ffff,#00ffff);color:black;padding:20px 28px;border-radius:18px;box-shadow:0 0 40px rgba(0,255,255,0.5);z-index:10000;text-align:center;font-weight:700;font-size:1.1rem;opacity:0;pointer-events:none;transition:all .4s ease;}
     .success-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
-    select#hour{margin-bottom:28px!important;}
-    
-    /* شريط التنقل السفلي - بدون نصوص */
-    .bottom-nav{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);width:92%;max-width:480px;background:rgba(255,255,255,0.06);backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(0,255,255,0.3);border-radius:30px;display:flex;justify-content:space-around;padding:14px 0;z-index:100;box-shadow:0 -5px 30px rgba(0,0,0,0.4),0 0 20px rgba(0,255,255,0.2);}
-    .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease;padding:12px 20px;border-radius:20px;width:60px;height:60px;}
-    .nav-item.active{background:rgba(0,255,255,0.15);box-shadow:0 0 20px rgba(0,255,255,0.4);}
-    .nav-icon{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,255,255,0.4));transition:all .3s ease;}
-    .nav-item.active .nav-icon{filter:drop-shadow(0 0 15px rgba(0,255,255,0.9));transform:scale(1.2);}
-    /* إخفاء النصوص تماماً */
-    .nav-label{display:none;}
-
+    .bottom-nav{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);width:92%;max-width:480px;background:rgba(255,255,255,0.06);backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(0,255,255,0.3);border-radius:30px;display:flex;justify-content:space-around;padding:10px 0;z-index:100;box-shadow:0 -5px 30px rgba(0,0,0,0.4),0 0 20px rgba(0,255,255,0.2);}
+    .nav-item{display:flex;flex-direction:column;align-items:center;color:var(--text);cursor:pointer;transition:all .3s ease;padding:12px 20px;border-radius:20px;}
+    .nav-item.active{color:var(--primary);background:rgba(0,255,255,0.1);}
+    .nav-icon{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(0,255,255,0.3));}
+    .nav-item.active .nav-icon{filter:drop-shadow(0 0 12px rgba(0,255,255,0.8));transform:scale(1.2);}
+    /* تم حذف النصوص من تحت الأيقونات */
     .hidden{display:none!important;}
     .phone-display{direction:ltr;text-align:center;font-weight:700;font-size:1.1rem;color:var(--accent);margin:8px 0;padding:6px 12px;background:rgba(0,255,255,0.1);border-radius:8px;border:1px solid var(--accent);}
-    .booking-status{color:#22d97a;font-weight:700;margin:10px 0;padding:8px;background:rgba(34,217,122,0.1);border-radius:8px;border:1px solid #22d97a;}
+    .booking-status{color:var(--success);font-weight:700;margin:10px 0;padding:8px;background:rgba(34,217,122,0.1);border-radius:8px;border:1px solid var(--success);}
     .bookings-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#000010,#03008a 60%,#000);z-index:200;display:none;flex-direction:column;padding:20px;overflow-y:auto;padding-bottom:80px;}
     .bookings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
     .bookings-title{color:var(--primary);font-size:1.8rem;}
@@ -64,45 +59,32 @@
     .confirm-yes,.confirm-no{flex:1;padding:12px;border:none;border-radius:10px;font-weight:700;cursor:pointer;}
     .confirm-yes{background:linear-gradient(135deg,#22d97a,#00ffff);color:white;}
     .confirm-no{background:#ff1744;color:white;}
-    .booking-cancel-btn{background:#ff1744;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:10px;transition:all .3s ease;}
+    .booking-cancel-btn{background:#ff1744;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:10px;}
     .booking-cancel-btn:hover{background:#d50032;transform:scale(1.05);}
   </style>
 </head>
 <body>
-
   <!-- شاشة الحجز الرئيسية -->
   <div id="mainScreen" class="screen active">
     <div class="container">
-      <h1>صالون التميز</h1>
-      <p class="subtitle">تجربة فاخرة بلمسة تقنية</p>
-
-      <div id="detailsCard" class="details-card"></div>
-
+      <h1>احجز موعدك الآن</h1>
+      <!-- تم حذف بطاقة التفاصيل من هنا نهائيًا -->
       <form id="bookingForm">
         <label for="name">الاسم الكامل</label>
-        <input type="text" id="name" required placeholder="أدخل اسمك الكامل (أحرف عربية فقط - من 7 إلى 50 حرف)">
-        <div class="error-message" id="nameError">الاسم يجب أن يحتوي على أحرف عربية فقط وبين 7 و50 حرف</div>
-
+        <input type="text" id="name" required placeholder="أدخل اسمك الكامل (عربي فقط)">
+        <div class="error-message" id="nameError">الاسم يجب أن يكون عربي فقط (7-50 حرف)</div>
+        
         <label for="phone">رقم الموبايل</label>
-        <input type="tel" id="phone" required placeholder="أدخل رقم الموبايل (11 رقم فقط)">
-        <div class="error-message" id="phoneError">رقم الموبايل يجب أن يحتوي على 11 رقم فقط</div>
-
-        <label for="service">نوع الخدمة</label>
-        <select id="service" required>
-          <option value="">اختر الخدمة</option>
-          <option value="قص شعر VIP">قص شعر VIP</option>
-          <option value="حلاقة ذقن ملكية">حلاقة ذقن ملكية</option>
-          <option value="صبغة فاخرة">صبغة فاخرة</option>
-          <option value="عناية بالبشرة">عناية بالبشرة</option>
-        </select>
-
+        <input type="tel" id="phone" required placeholder="أدخل رقم الجوال (11 رقم)">
+        <div class="error-message" id="phoneError">رقم الجوال يجب أن يكون 11 رقم</div>
+        
         <label for="day">اختر اليوم</label>
         <select id="day" required></select>
-
-        <label for="hour">اختر الساعة</label>
-        <select id="hour" required></select>
-
-        <button type="submit" id="submitBtn">احجز الآن</button>
+        
+        <label for="slot">اختر الوقت</label>
+        <select id="slot" required></select>
+        
+        <button type="submit">احجز الآن</button>
       </form>
     </div>
   </div>
@@ -111,35 +93,41 @@
   <div id="bookingsScreen" class="screen">
     <div class="container">
       <div class="bookings-header">
-        <h2 class="bookings-title">حجوزاتي</h2>
+        <h2 class="bookings-title">الحجز</h2>
       </div>
-
+      
       <div id="activeBookingBanner" class="active-booking-banner hidden">
         لديك حجز نشط - اضغط لعرض التفاصيل
       </div>
-
-      <div id="bookingsList"></div>
-
+      
+      <div id="bookingsList">
+        <!-- تفاصيل الحجز هتظهر هنا بس -->
+      </div>
+      
       <div id="noBookingsMessage" class="no-bookings hidden">
         <p>لا توجد حجوزات حالياً</p>
       </div>
     </div>
   </div>
 
-  <!-- شريط التنقل السفلي - فقط أيقونات بدون نصوص -->
+  <!-- الشريط السفلي بدون كلام -->
   <div class="bottom-nav" id="bottomNav">
     <div class="nav-item active" id="navHome">
-      <img src="hume-button.png" class="nav-icon" alt="الرئيسية" loading="lazy">
+      <!-- ضع هنا أيقونة الرئيسية -->
+      <img src="home-button.png" class="nav-icon" alt="الرئيسية">
+      <!-- مثال: src="icons/home.svg" أو src="https://.../home.png" -->
     </div>
     <div class="nav-item" id="navBookings">
-      <img src="order-history.png" class="nav-icon" alt="حجوزاتي" loading="lazy">
+      <!-- ضع هنا أيقونة الحجوزات -->
+      <img src="order-history.png" class="nav-icon" alt="الحجوزات">
+      <!-- مثال: src="icons/calendar.svg" أو أي أيقونة تحبها -->
     </div>
   </div>
 
   <!-- نافذة تأكيد الإلغاء -->
   <div id="confirmationModal" class="confirmation-modal">
     <div class="confirmation-content">
-      <h3 style="color:var(--primary);margin-bottom:15px;">تأكيد الإلغاء</h3>
+      <h3 style="color:var(--primary);">تأكيد الإلغاء</h3>
       <p class="confirmation-text">هل أنت متأكد من إلغاء هذا الحجز؟</p>
       <div class="confirmation-buttons">
         <button class="confirm-yes" id="confirmYes">نعم</button>
@@ -150,7 +138,6 @@
 
   <div id="successToast" class="success-toast"></div>
 
-  <!-- Firebase + JavaScript -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
     import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
@@ -168,10 +155,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // باقي الجافا سكريبت زي ما هو تماماً (ما غيرتش فيه حاجة)
-    // ... (كل الكود الأصلي من غير تغيير)
-    // أنا هحطه كامل تحت عشان ما يحصلش أي خطأ
-
+    // العناصر
     const mainScreen = document.getElementById("mainScreen");
     const bookingsScreen = document.getElementById("bookingsScreen");
     const navHome = document.getElementById("navHome");
@@ -183,34 +167,44 @@
     const confirmYes = document.getElementById("confirmYes");
     const confirmNo = document.getElementById("confirmNo");
     const toast = document.getElementById("successToast");
-    const details = document.getElementById("detailsCard");
     const form = document.getElementById("bookingForm");
     const nameInput = document.getElementById("name");
     const phoneInput = document.getElementById("phone");
     const nameError = document.getElementById("nameError");
     const phoneError = document.getElementById("phoneError");
     const daysSelect = document.getElementById("day");
-    const hoursSelect = document.getElementById("hour");
+    const slotSelect = document.getElementById("slot");
 
-    const days = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+    const daysArabic = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
     let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
     let myBooking = JSON.parse(localStorage.getItem("myBooking")) || null;
     let bookingToCancel = null;
     let currentBookings = {};
 
+    // تنسيق الوقت
+    function formatTime12(hour, minute) {
+      const h = hour % 12 || 12;
+      const m = minute.toString().padStart(2, '0');
+      const period = hour >= 12 ? 'pm' : 'am';
+      return `${h}:${m} ${period}`;
+    }
+
     function isValidName(n) { return /^[\u0600-\u06FF\s]{7,50}$/.test(n.trim()); }
     function isValidPhone(p) { return /^[0-9]{11}$/.test(p); }
 
+    // التحقق من الحقول
     nameInput.addEventListener("input", () => {
       const v = nameInput.value;
-      if (v && !isValidName(v)) { nameInput.classList.add("invalid"); nameError.style.display = "block"; }
+      if (v && !isValidName(v)) { nameInput.classList49.add("invalid"); nameError.style.display = "block"; }
       else { nameInput.classList.remove("invalid"); nameInput.classList.add("valid"); nameError.style.display = "none"; }
     });
+
     phoneInput.addEventListener("input", () => {
       const v = phoneInput.value;
       if (v && !isValidPhone(v)) { phoneInput.classList.add("invalid"); phoneError.style.display = "block"; }
       else { phoneInput.classList.remove("invalid"); phoneInput.classList.add("valid"); phoneError.style.display = "none"; }
     });
+
     nameInput.addEventListener("keydown", e => { if (/[0-9]/.test(e.key)) e.preventDefault(); });
     phoneInput.addEventListener("keydown", e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) e.preventDefault(); });
 
@@ -220,12 +214,13 @@
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
+    // التنقل بين الشاشات
     function showMainScreen() {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       mainScreen.classList.add('active');
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       navHome.classList.add('active');
-      populateDays(); populateHours();
+      populateDays();
     }
 
     function showBookingsScreen() {
@@ -234,129 +229,157 @@
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       navBookings.classList.add('active');
       loadUserBookings();
+      activeBookingBanner.classList.toggle("hidden", !myBooking);
       if (myBooking) {
-        activeBookingBanner.classList.remove("hidden");
-        activeBookingBanner.onclick = () => showDetails(myBooking);
-      } else {
-        activeBookingBanner.classList.add("hidden");
+        activeBookingBanner.onclick = () => showBookingInList(myBooking);
       }
     }
 
     navHome.addEventListener("click", showMainScreen);
     navBookings.addEventListener("click", showBookingsScreen);
 
+    // ملء الأيام
     function populateDays() {
       daysSelect.innerHTML = "<option value=''>اختر اليوم</option>";
       const today = new Date();
-      for (let i = 0; i < 7; i++) {
-        const d = new Date(); d.setDate(today.getDate() + i);
+      let added = 0;
+      let i = 0;
+      while (added < 6 && i < 30) {
+        const d = new Date();
+        d.setDate(today.getDate() + i++);
+        if (d.getDay() === 1) continue;
         const val = d.toISOString().slice(0, 10);
         const opt = document.createElement("option");
         opt.value = val;
-        opt.textContent = `${days[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})`;
+        opt.textContent = `${daysArabic[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})`;
         daysSelect.appendChild(opt);
+        added++;
       }
+      populateSlots();
     }
 
-    function populateHours() {
-      hoursSelect.innerHTML = "<option value=''>اختر الساعة</option>";
-      for (let h = 9; h <= 21; h++) {
-        const opt = document.createElement("option");
-        opt.value = `${h}:00`;
-        opt.textContent = `${h}:00`;
-        hoursSelect.appendChild(opt);
+    function populateSlots() {
+      slotSelect.innerHTML = "<option value=''>اختر الوقت</option>";
+      const slots = [];
+      for (let h = 15; h <= 23; h++) {
+        slots.push({h, m: 0});
+        slots.push({h, m: 20});
+        slots.push({h, m: 40});
       }
+      for (let h = 0; h <= 2; h++) {
+        slots.push({h, m: 0});
+        if (h < 2) slots.push({h, m: 20});
+        if (h < 2) slots.push({h, m: 40});
+      }
+      slots.forEach(slot => {
+        const time24 = `${slot.h.toString().padStart(2,'0')}:${slot.m.toString().padStart(2,'0')}`;
+        const display = formatTime12(slot.h, slot.m);
+        const opt = document.createElement("option");
+        opt.value = time24;
+        opt.textContent = display;
+        opt.dataset.key = `${daysSelect.value}_${time24}`;
+        slotSelect.appendChild(opt);
+      });
+      updateSlots();
     }
 
     const bookingsRef = ref(db, "bookings");
     onValue(bookingsRef, snap => {
       currentBookings = snap.val() || {};
-      updateHours();
+      updateSlots();
       if (myBooking && !currentBookings[myBooking.slotKey]) {
-        showToast("تم إلغاء حجزك بواسطة الصالون");
+        showToast("تم إلغاء حجزك من الصالون");
         localStorage.removeItem("myBooking");
         myBooking = null;
-        details.style.display = "none";
         activeBookingBanner.classList.add("hidden");
       }
     });
 
-    function updateHours() {
+    function updateSlots() {
       const selectedDay = daysSelect.value;
       if (!selectedDay) return;
       const now = new Date();
       const todayISO = now.toISOString().slice(0, 10);
-      hoursSelect.querySelectorAll("option").forEach(opt => {
+      slotSelect.querySelectorAll("option").forEach(opt => {
         if (!opt.value) return;
         const key = `${selectedDay}_${opt.value}`;
-        const [hour] = opt.value.split(":");
-        const isPast = (selectedDay === todayISO && parseInt(hour) <= now.getHours());
-        opt.disabled = currentBookings[key] || isPast;
+        const [h, m] = opt.value.split(":").map(Number);
+        const slotTime = new Date(selectedDay);
+        slotTime.setHours(h, m, 0, 0);
+        const isPast = selectedDay === todayISO && slotTime < now;
+        const bookingsInSlot = currentBookings[key] ? Object.keys(currentBookings[key]).length : 0;
+        opt.disabled = isPast || bookingsInSlot >= 2;
         opt.style.opacity = opt.disabled ? ".4" : "1";
+        opt.title = opt.disabled
+          ? (isPast ? "انتهى الوقت" : "مكتمل الحجز")
+          : `${2 - bookingsInSlot} مكان متاح`;
       });
     }
-    daysSelect.addEventListener("change", updateHours);
 
+    daysSelect.addEventListener("change", () => populateSlots());
+
+    // حجز جديد
     form.addEventListener("submit", async e => {
       e.preventDefault();
-
       const name = nameInput.value.trim();
       const phone = phoneInput.value.trim();
-      const service = document.getElementById("service").value;
       const day = daysSelect.value;
-      const hour = hoursSelect.value;
-
-      if (!isValidName(name)) { showToast("اسم غير صالح"); return; }
-      if (!isValidPhone(phone)) { showToast("رقم جوال غير صالح"); return; }
-      if (!service || !day || !hour) { showToast("يرجى ملء جميع الحقول"); return; }
-
-      const slotKey = `${day}_${hour}`;
-      if (currentBookings[slotKey]) {
-        showToast("عذرًا، هذا الموعد محجوز");
-        return;
-      }
+      const time = slotSelect.value;
+      if (!isValidName(name)) return showToast("الاسم غير صالح");
+      if (!isValidPhone(phone)) return showToast("رقم الجوال غير صحيح");
+      if (!day || !time) return showToast("اختر اليوم والوقت");
+      const slotKey = `${day}_${time}`;
+      const bookingsInSlot = currentBookings[slotKey] ? Object.keys(currentBookings[slotKey]).length : 0;
+      if (bookingsInSlot >= 2) return showToast("هذه الفترة مكتملة");
 
       const bookingId = Date.now().toString();
       currentUser = { name, phone, userId: Date.now().toString() };
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
       await set(ref(db, `bookings/${slotKey}/${bookingId}`), {
-        name, phone, service, day, hour,
+        name, phone, day, time,
         timestamp: new Date().toISOString(),
         userId: currentUser.userId
       });
 
-      myBooking = { name, phone, service, day, hour, slotKey, bookingId };
+      myBooking = { name, phone, day, time, slotKey, bookingId };
       localStorage.setItem("myBooking", JSON.stringify(myBooking));
-
       showToast("تم الحجز بنجاح!");
-
+      form.reset();
       setTimeout(() => {
         showBookingsScreen();
-        showDetails(myBooking);
       }, 1500);
-
-      form.reset();
-      populateDays();
-      populateHours();
     });
 
-    function showDetails(b) {
+    // عرض تفاصيل الحجز داخل صفحة الحجوزات فقط
+    function showBookingInList(b) {
       const d = new Date(b.day);
-      details.innerHTML = `
-        <h3>تفاصيل الحجز</h3>
-        <p><b>الاسم:</b> ${b.name}</p>
-        <div class="phone-display">${b.phone}</div>
-        <p><b>الخدمة:</b> ${b.service}</p>
-        <p><b>اليوم:</b> ${days[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})</p>
-        <p><b>الساعة:</b> ${b.hour}</p>
-        <div class="booking-status">موعد قادم</div>
-        <button class="cancel-btn" id="cancelBtn">إلغاء الحجز</button>
+      const [h, m] = b.time.split(":").map(Number);
+      const detailsHTML = `
+        <div class="details-card">
+          <h3>تفاصيل الحجز</h3>
+          <p><b>الاسم:</b> ${b.name}</p>
+          <div class="phone-display">${b.phone}</div>
+          <p><b>اليوم:</b> ${daysArabic[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})</p>
+          <p><b>الوقت:</b> ${formatTime12(h, m)}</p>
+          <div class="booking-status">موعد قادم</div>
+          <button class="cancel-btn" data-b='${JSON.stringify(b)}'>إلغاء الحجز</button>
+        </div>
       `;
-      details.style.display = "block";
-      document.getElementById("cancelBtn").onclick = () => showCancelConfirmation(b);
+
+      // إذا كان موجود بالفعل، لا نضيفه تاني
+      if (!document.querySelector(`[data-bid="${b.bookingId}"]`)) {
+        const div = document.createElement("div");
+        div.innerHTML = detailsHTML;
+        div.setAttribute("data-bid", b.bookingId);
+        div.querySelector('.cancel-btn').onclick = function() {
+          showCancelConfirmation(b);
+        };
+        bookingsList.prepend(div);
+      }
     }
 
+    // تأكيد الإلغاء
     function showCancelConfirmation(booking) {
       bookingToCancel = booking;
       confirmationModal.style.display = "flex";
@@ -375,17 +398,17 @@
         myBooking = null;
         activeBookingBanner.classList.add("hidden");
       }
-      showToast("تم إلغاء الحجز");
+      showToast("تم إلغاء الحجز بنجاح");
       hideCancelConfirmation();
       loadUserBookings();
-      updateHours();
     };
 
     confirmNo.onclick = hideCancelConfirmation;
 
+    // تحميل كل الحجوزات
     function loadUserBookings() {
       bookingsList.innerHTML = "";
-      if (!currentBookings || Object.keys(currentBookings).length === 0) {
+      if (!currentUser || !currentBookings || Object.keys(currentBookings).length === 0) {
         noBookingsMessage.classList.remove("hidden");
         return;
       }
@@ -394,9 +417,9 @@
       for (const slotKey in currentBookings) {
         for (const bookingId in currentBookings[slotKey]) {
           const b = currentBookings[slotKey][bookingId];
-          if (b.userId === currentUser?.userId) {
+          if (b.userId === currentUser.userId) {
             const [dayISO, time] = slotKey.split("_");
-            userBookings.push({ ...b, slotKey, bookingId, dayISO, time });
+            userBookings.push({ ...b, slotKey, bookingId, day: dayISO, time });
           }
         }
       }
@@ -407,31 +430,20 @@
       }
 
       noBookingsMessage.classList.add("hidden");
+      userBookings.sort((a, b) => a.day.localeCompare(b.day));
 
       userBookings.forEach(booking => {
-        const d = new Date(booking.dayISO);
-        const isActive = myBooking && myBooking.bookingId === booking.bookingId;
-        const item = document.createElement("div");
-        item.className = "booking-item";
-        item.innerHTML = `
-          <p><b>الاسم:</b> ${booking.name}</p>
-          <p><b>الجوال:</b> ${booking.phone}</p>
-          <p><b>الخدمة:</b> ${booking.service}</p>
-          <p><b>اليوم:</b> ${days[d.getDay()]} (${d.getDate()}/${d.getMonth()+1})</p>
-          <p><b>الساعة:</b> ${booking.time}</p>
-          ${isActive ? '<div class="booking-status">موعد قادم</div>' : ''}
-          <button class="booking-cancel-btn" data-b='${JSON.stringify(booking)}'>إلغاء الحجز</button>
-        `;
-        item.querySelector('.booking-cancel-btn').onclick = function() {
-          const data = JSON.parse(this.getAttribute('data-b'));
-          showCancelConfirmation(data);
-        };
-        bookingsList.appendChild(item);
+        showBookingInList(booking);
       });
     }
 
+    // بدء التطبيق
     populateDays();
-    populateHours();
+    if (myBooking) {
+      setTimeout(() => {
+        activeBookingBanner.classList.remove("hidden");
+      }, 500);
+    }
   </script>
 </body>
 </html>
