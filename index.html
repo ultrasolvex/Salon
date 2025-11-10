@@ -16,177 +16,223 @@
       --success: #22d97a;
     }
     * {margin:0;padding:0;box-sizing:border-box;font-family:'Almarai',sans-serif;}
-    html,body{height:100%;overflow-x:hidden;}
+    html,body{height:100%;overflow-x:hidden;background:#000;}
     body{
-      background:linear-gradient(135deg,#000010,#03008a 60%,#000);
+      background: radial-gradient(circle at 30% 70%, rgba(0,255,255,0.25) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(3,0,139,0.4) 0%, transparent 50%),
+                  linear-gradient(135deg, #000010 0%, #03008a 60%, #000 100%);
+      background-attachment: fixed;
       color:var(--text);
       min-height:100vh;
       padding:15px;
-      padding-bottom:80px;
+      padding-bottom:100px;
       position:relative;
       -webkit-font-smoothing:antialiased;
       user-select:none;
-      scroll-behavior:smooth;
     }
-    body::before{
-      content:"";
-      position:fixed;top:0;left:0;
-      width:200%;height:200%;
-      background:radial-gradient(circle,rgba(0,255,255,0.15),transparent 70%);
-      z-index:-1;
-      animation:bgMove 15s infinite linear;
-    }
-    @keyframes bgMove{0%{transform:translate(-50%,-50%)}100%{transform:translate(-25%,-25%)}}
 
-    /* الشريط العلوي - ينزل ويختفي تلقائي */
+    /* الشريط العلوي */
     .top-header{
-      position:fixed;
-      top:-100px;
-      left:0;
-      width:100%;
-      background:rgba(0,0,0,0.5);
-      backdrop-filter:blur(15px);
-      border-bottom:1px solid rgba(0,255,255,0.3);
-      padding:12px 16px;
-      text-align:center;
-      z-index:9999;
-      box-shadow:0 2px 15px rgba(0,255,255,0.15);
-      transition:top .7s cubic-bezier(.25,.8,.25,1),opacity .6s ease;
-      opacity:0;
+      position:fixed;top:-100px;left:0;width:100%;
+      background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(0,255,255,0.4);
+      padding:14px 16px;text-align:center;z-index:9999;
+      box-shadow:0 4px 20px rgba(0,255,255,0.2);
+      transition:top .7s cubic-bezier(.25,.8,.25,1);
     }
-    .top-header.show{top:0;opacity:1;}
-    .top-header.hide{top:-100px;opacity:0;}
+    .top-header.show{top:0;}
+    .salon-name{font-size:1.4rem;font-weight:800;color:var(--primary);text-shadow:0 0 15px rgba(0,255,255,0.8);letter-spacing:1.2px;}
+    .salon-slogan{font-size:0.8rem;color:#00ffff;opacity:0.95;font-weight:600;letter-spacing:2.5px;margin-top:5px;}
 
-    .salon-name{
-      font-size:1.38rem;
-      font-weight:800;
-      color:var(--primary);
-      text-shadow:0 0 12px rgba(0,255,255,0.7);
-      letter-spacing:1px;
-    }
-    .salon-slogan{
-      font-size:0.79rem;
-      color:#00ffff;
-      opacity:0.92;
-      font-weight:600;
-      letter-spacing:2.2px;
-      margin-top:4px;
-    }
-
+    /* الحاوية الرئيسية */
     .container{
-      background:rgba(255,255,255,0.06);
-      padding:28px 22px;
-      border-radius:30px;
-      border:2px solid rgba(0,255,255,0.35);
-      box-shadow:inset 0 0 25px rgba(0,255,255,0.25),0 0 35px rgba(0,255,255,0.25);
-      max-width:460px;width:100%;
-      text-align:center;
-      position:relative;
-      backdrop-filter:blur(20px) saturate(180%);
-      margin:80px auto 120px auto;
-      transition:margin-bottom .35s ease;
+      background:rgba(255,255,255,0.08);
+      padding:30px 24px;
+      border-radius:32px;
+      border:2px solid rgba(0,255,255,0.4);
+      box-shadow: inset 0 0 30px rgba(0,255,255,0.3),
+                  0 0 40px rgba(0,255,255,0.25);
+      max-width:460px;width:100%;margin:90px auto 140px auto;
+      text-align:center;position:relative;
+      backdrop-filter:blur(22px) saturate(180%);
+      transition:margin .4s ease;
     }
 
-    label{display:block;margin-bottom:6px;color:var(--accent);font-weight:600;text-align:right;}
+    label{display:block;margin-bottom:8px;color:var(--accent);font-weight:700;text-align:right;font-size:1.02rem;}
     input,select{
-      width:100%;padding:14px 16px;
+      width:100%;padding:16px 18px;
       border:2px solid var(--primary);
-      border-radius:16px;
+      border-radius:18px;
       background:var(--input-bg);
-      color:var(--accent);
-      font-size:16px !important;
-      transition:all .3s ease;
-      margin-bottom:18px;
+      color:var(--accent);font-size:16px;
+      transition:all .35s ease;margin-bottom:20px;
       appearance:none;
     }
-    input::placeholder{color:rgba(0,255,255,0.5);}
+    input::placeholder{color:rgba(0,255,255,0.55);}
     input:focus,select:focus{
-      outline:none;
-      border-color:#00ffff;
-      box-shadow:0 0 20px rgba(0,255,255,0.4);
-      transform:scale(1.02);
+      outline:none;border-color:#00ffff;
+      box-shadow:0 0 25px rgba(0,255,255,0.5);
+      transform:scale(1.03);
     }
-    .error-message{color:var(--error);font-size:.85rem;margin-top:-12px;margin-bottom:15px;text-align:right;display:none;font-weight:600;}
+    .error-message{color:var(--error);font-size:.9rem;margin-top:-14px;margin-bottom:16px;text-align:right;display:none;font-weight:700;}
+
     button[type=submit]{
       background:linear-gradient(135deg,#00ffff,#00b8d4);
-      color:black;
-      border:none;
-      padding:15px 32px;
-      font-size:1.15rem;
-      font-weight:700;
-      border-radius:20px;
-      cursor:pointer;
-      width:100%;
-      transition:all .3s ease;
-      box-shadow:0 0 20px rgba(0,255,255,0.3);
-      margin-top:24px;
+      color:#000;font-size:1.2rem;font-weight:800;
+      border:none;padding:17px 32px;border-radius:22px;
+      cursor:pointer;width:100%;margin-top:28px;
+      box-shadow:0 0 25px rgba(0,255,255,0.4);
+      transition:all .35s ease;
     }
-    button[type=submit]:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(0,255,255,0.5);}
+    button[type=submit]:hover{
+      transform:scale(1.06);box-shadow:0 0 50px rgba(0,255,255,0.6);
+    }
 
+    /* الشريط السفلي */
     .bottom-nav{
-      position:fixed;
-      bottom:15px;
-      left:50%;
-      transform:translateX(-50%);
-      width:92%;
-      max-width:480px;
-      background:rgba(255,255,255,0.06);
-      backdrop-filter:blur(20px) saturate(180%);
-      border:1px solid rgba(0,255,255,0.3);
-      border-radius:30px;
-      display:flex;
-      justify-content:space-around;
-      padding:10px 0;
-      z-index:100;
-      box-shadow:0 -5px 30px rgba(0,0,0,0.4),0 0 20px rgba(0,255,255,0.2);
-      transition:all .4s cubic-bezier(.4,0,.2,1);
-    }
-    .bottom-nav.hidden{
-      transform:translateX(-50%) translateY(150%);
-      opacity:0;
-      pointer-events:none;
-    }
-    .nav-item{display:flex;flex-direction:column;align-items:center;color:var(--text);cursor:pointer;transition:all .3s ease;padding:12px 20px;border-radius:20px;}
-    .nav-item.active{color:var(--primary);background:rgba(0,255,255,0.1);}
-    .nav-icon{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(0,255,255,0.3));}
-    .nav-item.active .nav-icon{filter:drop-shadow(0 0 12px rgba(0,255,255,0.8));transform:scale(1.2);}
-
-    .screen{display:none;width:100%;min-height:calc(100vh - 80px);padding:20px;padding-bottom:0;padding-top:80px;}
-    .screen.active{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;}
-    .hidden{display:none!important;}
-    .success-toast{
-      position:fixed;top:50%;left:50%;
-      transform:translate(-50%,-50%) scale(0.8);
-      background:linear-gradient(135deg,#00ffff,#00b8d4);
-      color:black;padding:20px 28px;
-      border-radius:18px;
-      box-shadow:0 0 40px rgba(0,255,255,0.5);
-      z-index:10000;text-align:center;
-      font-weight:700;font-size:1.1rem;
-      opacity:0;pointer-events:none;
+      position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+      width:92%;max-width:480px;
+      background:rgba(255,255,255,0.08);backdrop-filter:blur(22px);
+      border:1.5px solid rgba(0,255,255,0.35);
+      border-radius:32px;padding:12px 0;
+      display:flex;justify-content:space-around;z-index:100;
+      box-shadow:0 -8px 35px rgba(0,0,0,0.5), 0 0 25px rgba(0,255,255,0.25);
       transition:all .4s ease;
     }
+    .bottom-nav.hidden{transform:translateX(-50%) translateY(120%);opacity:0;pointer-events:none;}
+    .nav-item{display:flex;flex-direction:column;align-items:center;color:var(--text);cursor:pointer;transition:all .3s ease;padding:10px 24px;border-radius:22px;}
+    .nav-item.active{color:var(--primary);background:rgba(0,255,255,0.15);transform:scale(1.1);}
+    .nav-icon{width:36px;height:36px;filter:drop-shadow(0 0 6px rgba(0,255,255,0.4));transition:all .3s ease;}
+    .nav-item.active .nav-icon{filter:drop-shadow(0 0 15px rgba(0,255,255,0.9));transform:scale(1.25);}
+
+    /* باقي العناصر */
+    .screen{display:none;width:100%;min-height:calc(100vh - 100px);padding:20px;padding-top:90px;padding-bottom:0;}
+    .screen.active{display:flex;flex-direction:column;align-items:center;}
+    .success-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);
+      background:linear-gradient(135deg,#00ffff,#00b8d4);color:#000;
+      padding:22px 32px;border-radius:20px;box-shadow:0 0 50px rgba(0,255,255,0.6);
+      z-index:10000;font-weight:800;font-size:1.15rem;opacity:0;pointer-events:none;transition:all .4s ease;}
     .success-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
-    .details-card{background:rgba(255,255,255,0.06);border:1.5px solid var(--primary);border-radius:16px;padding:22px;margin-top:18px;box-shadow:0 0 20px rgba(0,255,255,0.2);}
-    .cancel-btn{background:#ff1744;color:white;padding:10px 24px;border:none;border-radius:10px;cursor:pointer;margin-top:16px;font-weight:600;}
+    
+    /* بطاقة الحجز - مُحسّنة */
+    .details-card{
+      background:rgba(255,255,255,0.08);
+      border:2px solid var(--primary);
+      border-radius:18px;
+      padding:26px 22px;
+      margin-top:20px;
+      box-shadow:0 0 25px rgba(0,255,255,0.25);
+      text-align:right;
+      word-wrap:break-word;
+      overflow-wrap:break-word;
+    }
+    .details-card h3{
+      color:var(--primary);
+      margin-bottom:18px;
+      font-size:1.35rem;
+      text-align:center;
+    }
+    .details-card p{
+      margin:12px 0;
+      line-height:1.6;
+      font-size:1.05rem;
+    }
+    .details-card b{color:var(--accent);}
+
+    /* رقم الموبايل - الحل السحري */
+    .phone-display{
+      direction:ltr;
+      text-align:center;
+      font-weight:700;
+      font-size:1.2rem;
+      color:var(--accent);
+      margin:14px 0;
+      padding:12px 16px;
+      background:rgba(0,255,255,0.12);
+      border-radius:12px;
+      border:1.5px solid var(--accent);
+      word-break:break-all; /* يكسر الرقم لو طويل جدًا */
+      overflow:hidden;
+      line-height:1.4;
+    }
+
+    .booking-status{
+      color:var(--success);
+      font-weight:700;
+      padding:10px 16px;
+      background:rgba(34,217,122,0.15);
+      border-radius:10px;
+      border:1px solid var(--success);
+      text-align:center;
+      margin:14px 0;
+    }
+    .cancel-btn{
+      background:#ff1744;
+      color:white;
+      padding:13px 32px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      margin-top:20px;
+      font-weight:700;
+      font-size:1.05rem;
+      width:100%;
+    }
     .cancel-btn:hover{background:#d50032;}
-    .phone-display{direction:ltr;text-align:center;font-weight:700;font-size:1.1rem;color:var(--accent);margin:8px 0;padding:6px 12px;background:rgba(0,255,255,0.1);border-radius:8px;border:1px solid var(--accent);}
-    .booking-status{color:var(--success);font-weight:700;margin:10px 0;padding:8px;background:rgba(34,217,122,0.1);border-radius:8px;border:1px solid var(--success);}
-    .confirmation-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;justify-content:center;align-items:center;z-index:1000;}
-    .confirmation-content{background:rgba(255,255,255,0.06);padding:25px;border-radius:18px;border:2px solid rgba(0,255,255,0.35);box-shadow:0 0 30px rgba(0,255,255,0.4);text-align:center;max-width:350px;width:90%;}
-    .confirm-yes,.confirm-no{flex:1;padding:12px;border:none;border-radius:10px;font-weight:700;cursor:pointer;}
+
+    .active-booking-banner{
+      background:rgba(0,255,255,0.12);
+      border:1.5px solid var(--primary);
+      border-radius:14px;
+      padding:16px;
+      margin:20px 0;
+      text-align:center;
+      color:var(--primary);
+      font-weight:700;
+      cursor:pointer;
+      font-size:1.1rem;
+    }
+    .no-bookings{
+      text-align:center;
+      color:#aaa;
+      margin-top:60px;
+      font-size:1.2rem;
+    }
+    .confirmation-modal{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.8);
+      display:none;justify-content:center;align-items:center;z-index:10000;
+    }
+    .confirmation-content{
+      background:rgba(255,255,255,0.08);
+      padding:30px;
+      border-radius:20px;
+      border:2px solid rgba(0,255,255,0.4);
+      box-shadow:0 0 40px rgba(0,255,255,0.5);
+      text-align:center;
+      max-width:340px;
+      width:90%;
+    }
+    .confirm-yes,.confirm-no{
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+      margin:8px;
+      flex:1;
+      font-size:1.05rem;
+    }
     .confirm-yes{background:linear-gradient(135deg,#22d97a,#00ffff);color:white;}
     .confirm-no{background:#ff1744;color:white;}
-    .active-booking-banner{background:rgba(0,255,255,0.1);border:1px solid var(--primary);border-radius:12px;padding:15px;margin-bottom:20px;text-align:center;color:var(--primary);font-weight:600;cursor:pointer;}
-    .no-bookings{text-align:center;color:#ccc;margin-top:50px;font-size:1.1rem;}
   </style>
 </head>
 <body>
 
-  <!-- الشريط العلوي (ينزل ويختفي تلقائي) -->
+  <!-- الشريط العلوي -->
   <div class="top-header">
     <div class="salon-name">صالون بلال حمدي</div>
-    <div class="salon-slogan">احجز موعدك الآن</div>
+    <div class="salon-slogan">احجز موعدك بسهولة وسرعة</div>
   </div>
 
   <!-- شاشة الحجز -->
@@ -195,17 +241,17 @@
       <form id="bookingForm">
         <label for="name">الاسم كامل</label>
         <input type="text" id="name" required placeholder="أدخل الاسم">
-        
+
         <label for="phone">رقم الموبايل</label>
-        <input type="tel" id="phone" required placeholder="ادخل رقم الموبايل">
-        <div class="error-message" id="phoneError">رقم الجوال يجب أن يكون 11 رقم</div>
-        
+        <input type="tel" id="phone" required placeholder="01xxxxxxxxx">
+        <div class="error-message" id="phoneError">رقم الجوال لازم 11 رقم</div>
+
         <label for="day">اختر اليوم</label>
         <select id="day" required></select>
-        
+
         <label for="slot">اختر الوقت</label>
         <select id="slot" required></select>
-        
+
         <button type="submit">احجز الآن</button>
       </form>
     </div>
@@ -214,16 +260,10 @@
   <!-- شاشة الحجوزات -->
   <div id="bookingsScreen" class="screen">
     <div class="container">
-      <div class="bookings-header">
-        <h2 style="color:var(--primary);font-size:1.8rem;">الحجز</h2>
-      </div>
-      <div id="activeBookingBanner" class="active-booking-banner hidden">
-        لديك حجز نشط
-      </div>
+      <h2 style="color:var(--primary);font-size:1.9rem;margin-bottom:20px;">الحجز</h2>
+      <div id="activeBookingBanner" class="active-booking-banner hidden">لديك حجز نشط</div>
       <div id="bookingsList"></div>
-      <div id="noBookingsMessage" class="no-bookings hidden">
-        <p>قائمة الحجز فارغة</p>
-      </div>
+      <div id="noBookingsMessage" class="no-bookings hidden"></div>
     </div>
   </div>
 
@@ -240,11 +280,11 @@
   <!-- نافذة التأكيد -->
   <div id="confirmationModal" class="confirmation-modal">
     <div class="confirmation-content">
-      <h3 style="color:var(--primary);">تأكيد الإلغاء</h3>
-      <p>هل أنت متأكد من إلغاء هذا الحجز؟</p>
-      <div class="confirmation-buttons">
-        <button class="confirm-yes" id="confirmYes">نعم</button>
-        <button class="confirm-no" id="confirmNo">لا</button>
+      <h3 style="color:var(--primary);margin-bottom:15px;">تأكيد الإلغاء</h3>
+      <p style="margin-bottom:20px;">متأكد إنك عايز تلغي الحجز ده؟</p>
+      <div style="display:flex;gap:12px;">
+        <button class="confirm-yes" id="confirmYes">أيوة</button>
+        <button class="confirm-no" id="confirmNo">لأ</button>
       </div>
     </div>
   </div>
@@ -296,36 +336,29 @@
     function formatTime12(h, m) {
       const hour = h % 12 || 12;
       const minute = m.toString().padStart(2, '0');
-      const period = h >= 12 ? 'pm' : 'am';
+      const period = h >= 12 ? 'م' : 'ص';
       return `${hour}:${minute} ${period}`;
     }
 
     function isValidName(n) { return /^[\u0600-\u06FF\s]{7,50}$/.test(n.trim()); }
-    function isValidPhone(p) { return /^[0-9]{11}$/.test(p); }
+    function isValidPhone(p) { return /^01[0125][0-9]{8}$/.test(p); }
 
-    nameInput.addEventListener("input", () => {
-      const v = nameInput.value;
-      nameInput.classList.toggle("invalid", v && !isValidName(v));
-    });
-
+    nameInput.addEventListener("keydown", e => { if (/[0-9]/.test(e.key)) e.preventDefault(); });
     phoneInput.addEventListener("input", () => {
       const v = phoneInput.value;
       if (v && !isValidPhone(v)) {
-        phoneInput.classList.add("invalid");
+        phoneInput.style.borderColor = "#ff1744";
         phoneError.style.display = "block";
       } else {
-        phoneInput.classList.remove("invalid");
+        phoneInput.style.borderColor = "#00ffff";
         phoneError.style.display = "none";
       }
     });
 
-    nameInput.addEventListener("keydown", e => { if (/[0-9]/.test(e.key)) e.preventDefault(); });
-    phoneInput.addEventListener("keydown", e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) e.preventDefault(); });
-
     function showToast(msg) {
       toast.textContent = msg;
       toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
+      setTimeout(() => toast.classList.remove("show"), 3200);
     }
 
     function showMainScreen() {
@@ -353,14 +386,15 @@
       daysSelect.innerHTML = "<option value=''>اختر اليوم</option>";
       const today = new Date();
       let added = 0, i = 0;
-      while (added < 6 && i < 30) {
+      while (added < 7 && i < 30) {
         const d = new Date();
         d.setDate(today.getDate() + i++);
-        if (d.getDay() === 5) continue; // تخطي الجمعة
+        const dayOfWeek = d.getDay();
+        if (dayOfWeek === 1) continue;
         const val = d.toISOString().slice(0, 10);
         const opt = document.createElement("option");
         opt.value = val;
-        opt.textContent = `${daysArabic[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})`;
+        opt.textContent = `${daysArabic[dayOfWeek]} (${d.getDate()}/${d.getMonth() + 1})`;
         daysSelect.appendChild(opt);
         added++;
       }
@@ -403,15 +437,18 @@
         const key = `${daysSelect.value}_${opt.value}`;
         const [h,m] = opt.value.split(":").map(Number);
         const slotTime = new Date(daysSelect.value);
-        slotTime.setHours(h,m,0,0);
+        slotTime.setHours(h, m, 0, 0);
         const isPast = daysSelect.value === today && slotTime < now;
         const booked = currentBookings[key] ? Object.keys(currentBookings[key]).length : 0;
         opt.disabled = isPast || booked >= 2;
-        opt.style.opacity = opt.disabled ? ".4" : "1";
+        opt.style.opacity = opt.disabled ? "0.4" : "1";
+        opt.textContent = opt.disabled 
+          ? `${formatTime12(h,m)} ${isPast ? '(انتهى)' : '(مكتمل)'}` 
+          : formatTime12(h,m);
       });
     }
 
-    daysSelect.onchange = populateSlots;
+    daysSelect.onchange = () => { populateSlots(); };
 
     form.onsubmit = async e => {
       e.preventDefault();
@@ -420,13 +457,13 @@
       const day = daysSelect.value;
       const time = slotSelect.value;
 
-      if (!isValidName(name)) return showToast("الاسم غير صالح");
-      if (!isValidPhone(phone)) return showToast("رقم الجوال غير صحيح");
-      if (!day || !time) return showToast("اختر اليوم والوقت");
+      if (!isValidName(name)) return showToast("الاسم لازم يكون عربي وأكثر من 6 حروف");
+      if (!isValidPhone(phone)) return showToast("رقم الموبايل لازم يبدأ بـ 01 و11 رقم");
+      if (!day || !time) return showToast("اختار اليوم والوقت");
 
       const slotKey = `${day}_${time}`;
       const booked = currentBookings[slotKey] ? Object.keys(currentBookings[slotKey]).length : 0;
-      if (booked >= 2) return showToast("هذه الفترة مكتملة");
+      if (booked >= 2) return showToast("الفترة دي مكتملة");
 
       const bookingId = Date.now().toString();
       currentUser = { name, phone, userId: Date.now().toString() };
@@ -442,7 +479,7 @@
       localStorage.setItem("myBooking", JSON.stringify(myBooking));
       showToast("تم الحجز بنجاح!");
       form.reset();
-      setTimeout(showBookingsScreen, 1500);
+      setTimeout(showBookingsScreen, 1800);
     };
 
     function showBookingInList(b) {
@@ -479,7 +516,7 @@
         myBooking = null;
         activeBookingBanner.classList.add("hidden");
       }
-      showToast("تم إلغاء الحجز بنجاح");
+      showToast("تم إلغاء الحجز");
       confirmationModal.style.display = "none";
       loadUserBookings();
     };
@@ -508,32 +545,26 @@
       userBookings.forEach(showBookingInList);
     }
 
-    // إخفاء الشريط السفلي عند الكتابة
     document.querySelectorAll("input, select").forEach(el => {
       el.addEventListener("focus", () => {
         bottomNav.classList.add("hidden");
-        document.querySelector(".container").style.marginBottom = "20px";
+        document.querySelector(".container").style.marginBottom = "30px";
       });
       el.addEventListener("blur", () => {
         setTimeout(() => {
           if (!document.activeElement?.matches("input, select")) {
             bottomNav.classList.remove("hidden");
-            document.querySelector(".container").style.marginBottom = "120px";
+            document.querySelector(".container").style.marginBottom = "140px";
           }
-        }, 100);
+        }, 150);
       });
     });
 
-    // أنيميشن الشريط العلوي: ينزل → 2.5 ثانية → يطلع ويختفي نهائي
-    setTimeout(() => document.querySelector('.top-header').classList.add('show'), 400);
-    setTimeout(() => {
-      document.querySelector('.top-header').classList.remove('show');
-      document.querySelector('.top-header').classList.add('hide');
-    }, 2900);
+    setTimeout(() => document.querySelector('.top-header').classList.add('show'), 500);
+    setTimeout(() => document.querySelector('.top-header').classList.remove('show'), 3500);
 
-    // تشغيل التطبيق
     populateDays();
-    if (myBooking) setTimeout(() => activeBookingBanner.classList.remove("hidden"), 500);
+    if (myBooking) setTimeout(() => activeBookingBanner.classList.remove("hidden"), 800);
   </script>
 </body>
 </html>
