@@ -114,7 +114,7 @@
       z-index:10000;font-weight:800;font-size:1.15rem;opacity:0;pointer-events:none;transition:all .4s ease;}
     .success-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
     
-    /* بطاقة الحجز - مُحسّنة */
+    /* بطاقة الحجز */
     .details-card{
       background:rgba(255,255,255,0.08);
       border:2px solid var(--primary);
@@ -139,7 +139,6 @@
     }
     .details-card b{color:var(--accent);}
 
-    /* رقم الموبايل - الحل السحري */
     .phone-display{
       direction:ltr;
       text-align:center;
@@ -151,7 +150,7 @@
       background:rgba(0,255,255,0.12);
       border-radius:12px;
       border:1.5px solid var(--accent);
-      word-break:break-all; /* يكسر الرقم لو طويل جدًا */
+      word-break:break-all;
       overflow:hidden;
       line-height:1.4;
     }
@@ -263,7 +262,7 @@
       <h2 style="color:var(--primary);font-size:1.9rem;margin-bottom:20px;">الحجز</h2>
       <div id="activeBookingBanner" class="active-booking-banner hidden">لديك حجز نشط</div>
       <div id="bookingsList"></div>
-      <div id="noBookingsMessage" class="no-bookings hidden"></div>
+      <div id="noBookingsMessage" class="no-bookings hidden">مفيش حجوزات حالية</div>
     </div>
   </div>
 
@@ -430,21 +429,43 @@
 
     function updateSlots() {
       if (!daysSelect.value) return;
+
       const now = new Date();
-      const today = now.toISOString().slice(0,10);
+      const todayStr = now.toISOString().slice(0, 10);
+      const selectedDate = new Date(daysSelect.value);
+      const isToday = daysSelect.value === todayStr;
+
+      const workDayEnd = new Date(selectedDate);
+      workDayEnd.setHours(26, 0, 0, 0); // 2:00 صباحًا
+
       slotSelect.querySelectorAll("option").forEach(opt => {
         if (!opt.value) return;
+
         const key = `${daysSelect.value}_${opt.value}`;
-        const [h,m] = opt.value.split(":").map(Number);
-        const slotTime = new Date(daysSelect.value);
+        const [h, m] = opt.value.split(":").map(Number);
+        const slotTime = new Date(selectedDate);
         slotTime.setHours(h, m, 0, 0);
-        const isPast = daysSelect.value === today && slotTime < now;
+
+        let isPast = false;
+
+        if (isToday) {
+          if (now >= workDayEnd) {
+            isPast = true;
+          } else if (h >= 0 && h < 3) {
+            isPast = false;
+          } else {
+            isPast = slotTime < now;
+          }
+        }
+
         const booked = currentBookings[key] ? Object.keys(currentBookings[key]).length : 0;
-        opt.disabled = isPast || booked >= 2;
-        opt.style.opacity = opt.disabled ? "0.4" : "1";
-        opt.textContent = opt.disabled 
-          ? `${formatTime12(h,m)} ${isPast ? '(انتهى)' : '(مكتمل)'}` 
-          : formatTime12(h,m);
+        const disabled = isPast || booked >= 2;
+
+        opt.disabled = disabled;
+        opt.style.opacity = disabled ? "0.4" : "1";
+        opt.textContent = disabled
+          ? `${formatTime12(h, m)} ${isPast ? '(انتهى)' : '(مكتمل)'}`
+          : formatTime12(h, m);
       });
     }
 
